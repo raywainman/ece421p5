@@ -2,8 +2,6 @@ require "xmlrpc/client"
 require "socket"
 
 require_relative "./contracts/main_controller_contracts"
-require_relative "../state"
-require_relative "../server/server_manager"
 
 # Controller object for the MainView object.
 
@@ -122,7 +120,7 @@ class MainController
   end
 
   def on_join_clicked
-    @id = 0
+    @id = @view.game_id.text.to_i
     ip_address = Socket.ip_address_list[5].ip_address
     server_object = XMLRPC::Client.new(@view.ip_address.text, "/", 8080)
     @server = server_object.proxy("server")

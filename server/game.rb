@@ -2,7 +2,6 @@ require_relative "./ai_player"
 require_relative "./connect4"
 require_relative "./grid"
 require_relative "./human_player"
-require_relative "../state"
 require_relative "./contracts/game_contracts"
 
 # Main game object. All game logic is amalgamated here.
@@ -15,7 +14,7 @@ require_relative "./contracts/game_contracts"
 class Game
   include GameContracts
   
-  attr_reader :players
+  attr_reader :players, :winner, :winner_name
   
   # Creates a new instance of the game given a GameType, a list of Player objects
   # and a View object to update
@@ -27,7 +26,8 @@ class Game
     @game_name = game_name
     @grid = Grid.new
     @active_player = 0
-    @winner = 20 # winner == 20 means no winner
+    @winner = -1
+    @winner_name = ""
     class_invariant()
     initialize_postconditions()
   end
@@ -52,12 +52,12 @@ class Game
 
   # Constructs a State object from the current game state
   def get_state()
-    get_state_preconditions()
+    #get_state_preconditions()
     class_invariant()
-    result = State.new(@grid.grid, @active_player, @winner)
+    #result = State.new(@grid.grid, @active_player, @winner)
     class_invariant()
-    get_state_postconditions(result)
-    return result
+    #get_state_postconditions(result)
+    return @grid.grid, @active_player
   end
 
   # Determines if the current board state results in a win for the current
@@ -81,23 +81,14 @@ class Game
   # Checks to see if it is the end of the game (via a win or tie) and launches
   # the appropriate action.
   def is_end?
-    winner = is_win()
-    if winner != -1
-      winner_name = @players[winner].name
+    @winner = is_win()
+    if @winner != -1
+      @winner_name = @players[@winner].name
       puts "Winner " + winner_name
-      @players.each { |player|
-        if player.is_a?(HumanPlayer)
-          player.rpc.win(winner_name)
-        end
-      }
       return true
     elsif @grid.is_full?
       puts "Tie Game"
-      @players.each { |player|
-        if player.is_a?(HumanPlayer)
-          player.rpc.tie()
-        end
-      }
+      @winner = -2
       return true
     end
     return false
@@ -117,7 +108,6 @@ class Game
     puts "Player " + player + " made a move on column " + column.to_s
     @grid.make_move(@game_type.get_player_label(@active_player), column)
     if is_end?
-      update_views()
       return true
     end
     @active_player = (@active_player + 1) % @players.size
@@ -128,25 +118,13 @@ class Game
       puts @players[@active_player].name + " made a move on column " + move.to_s
       @grid.make_move(@game_type.get_player_label(@active_player), move)
       if is_end?
-        update_views()
         return true
       end
       @active_player = (@active_player + 1) % @players.size
     end
-    update_views()
     class_invariant()
     make_move_postconditions()
     return true
-  end
-
-  def update_views()
-    state = get_state()
-    @players.each { |player|
-      if player.is_a?(HumanPlayer) && player.name != ""
-        player.rpc.update(Marshal.dump(state.grid), state.active_player)
-      end
-    }
-    puts "OKEY"
   end
 
   def get_player_names()
