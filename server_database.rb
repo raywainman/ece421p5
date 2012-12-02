@@ -7,7 +7,7 @@ class ServerDatabase
 
   @@HOST = "127.0.0.1"
   @@USER = "root"
-  @@PASS = ""
+  @@PASS = "asdf"
   @@DB = "ECE421P5"
   @@NOT_FOUND_ID = -1
   def initialize(dbConnection)
@@ -244,6 +244,18 @@ class ServerDatabase
 
     stmt.close()
     post_set_game_complete(gameID)
+    result
+  end
+
+  #Gives a player the permissions to restore an existing game
+  #(Game must not be completed)
+  def add_restorable_player_to_game(game_id, name)
+    pre_add_restorable_player_to_game(game_id, name)
+
+    player_id = get_player_id(name)
+    result = addRestorablePlayer(game_id, player_id)
+
+    post_add_restorable_player_to_game(result)
     result
   end
 

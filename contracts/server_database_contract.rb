@@ -112,6 +112,19 @@ module ServerDatabaseContract
     end
   end
 
+  def pre_add_restorable_player_to_game(game_id, name)
+    class_invariant
+    check_database_id(game_id)
+    assert(gameExist?(game_id))
+    assert(!gameComplete?(game_id))
+    check_name(name)
+  end
+  
+  def post_add_restorable_player_to_game(result)
+    check_database_id(result)
+    class_invariant
+  end
+  
   def pre_get_wins(name, limit_start, number_of_records)
     class_invariant
     check_name(name)
@@ -427,7 +440,7 @@ class_invariant
   def pre_player_create(name)
     class_invariant
     check_name(name)
-    assert(!player_exist?(name))
+    assert(player_exist?(name) == -1)
   end
 
   def post_player_create(name)
