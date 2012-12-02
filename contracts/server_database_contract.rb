@@ -52,6 +52,7 @@ module ServerDatabaseContract
 
   def post_initialize(db)
     assert(@dbh == db)
+    class_invariant
   end
 
   def ServerDatabaseContract.pre_getInstance()
@@ -64,6 +65,7 @@ module ServerDatabaseContract
   end
 
   def pre_close_connection
+    class_invariant
     #None
   end
 
@@ -88,12 +90,14 @@ module ServerDatabaseContract
   end
 
   def pre_get_player_id(name)
+    class_invariant
     check_name(name)
   end
 
   def post_get_player_id(id, name)
     check_database_id(id)
     player_exist?(name)
+    class_invariant
   end
 
   def check_db_limits(limit_start, number_of_records)
@@ -109,6 +113,7 @@ module ServerDatabaseContract
   end
 
   def pre_get_wins(name, limit_start, number_of_records)
+    class_invariant
     check_name(name)
     check_db_limits(limit_start, number_of_records)
   end
@@ -121,24 +126,29 @@ module ServerDatabaseContract
 
   def post_get_wins(result)
     check_count_result(result)
+    class_invariant
   end
 
   def pre_get_loses(name, limit_start, number_of_records)
+    class_invariant
     check_name(name)
     check_db_limits(limit_start, number_of_records)
   end
 
   def post_get_loses(result)
     check_count_result(result)
+    class_invariant
   end
 
   def pre_get_draws(name, limit_start, number_of_records)
+    class_invariant
     check_name(name)
     check_db_limits(limit_start, number_of_records)
   end
 
   def post_get_draws(result)
     check_count_result(result)
+    class_invariant
   end
 
   def check_average_result(result)
@@ -148,24 +158,29 @@ module ServerDatabaseContract
   end
 
   def pre_get_avg_tokens_for_win(name, limit_start, number_of_records)
+    class_invariant
     check_name(name)
     check_db_limits(limit_start, number_of_records)
   end
 
   def post_get_avg_tokens_for_win(result)
     check_average_result(result)
+    class_invariant
   end
 
   def pre_get_avg_tokens(name, limit_start, number_of_records)
+    class_invariant
     check_name(name)
     check_db_limits(limit_start, number_of_records)
   end
 
   def post_get_avg_tokens(result)
     check_average_result(result)
+    class_invariant
   end
 
   def pre_create_game_id(game_name, players, game_obj)
+    class_invariant
     check_name(game_name)
 
     assert(players!=nil)
@@ -184,9 +199,11 @@ module ServerDatabaseContract
   def post_create_game_id(id)
     check_database_id(id)
     assert(gameExist?(id))
+    class_invariant
   end
 
   def pre_update_game(id, data)
+    class_invariant
     check_database_id(id)
     assert(data!=nil)
     assert(gameExist?(id))
@@ -195,9 +212,11 @@ module ServerDatabaseContract
 
   def post_update_game
     #None
+    class_invariant
   end
 
   def pre_set_game_complete(id)
+    class_invariant
     check_database_id(id)
     assert(gameExist?(id))
     assert(!gameComplete?(id))
@@ -205,9 +224,11 @@ module ServerDatabaseContract
 
   def post_set_game_complete(id)
     assert(gameComplete?(id))
+    class_invariant
   end
 
   def pre_retrieve_incomplete_game_data(id)
+    class_invariant
     check_database_id(id)
     assert(gameExist?(id))
     assert(!gameComplete?(id))
@@ -215,9 +236,11 @@ module ServerDatabaseContract
 
   def post_retrieve_incomplete_game_data(data)
     assert(data!=nil)
+    class_invariant
   end
 
   def pre_retrieve_incomplete_games_for_player(name, limit_start, number_of_records)
+    class_invariant
     check_name(name)
     check_db_limits(limit_start, number_of_records)
   end
@@ -238,10 +261,11 @@ module ServerDatabaseContract
       check_name(element[1])
 
     }
-
+class_invariant
   end
 
   def pre_save_statistics(hash)
+    class_invariant
     assert(hash!=nil)
     assert(hash.respond_to?("[]"))
     assert(hash.respond_to?("has_key?"))
@@ -266,9 +290,11 @@ module ServerDatabaseContract
 
   def post_save_statistics(game_results_id)
     check_database_id(game_results_id)
+    class_invariant
   end
 
   def pre_get_recent_games(player_name, limit_start, number_of_records)
+    class_invariant
     check_name(player_name)
     check_db_limits(limit_start, number_of_records)
   end
@@ -294,10 +320,11 @@ module ServerDatabaseContract
       assert(element[2].to_i > 0)
 
     }
-
+class_invariant
   end
 
   def pre_addGame(game_name, data)
+    class_invariant
     check_name(game_name)
     assert(data!=nil)
   end
@@ -305,9 +332,11 @@ module ServerDatabaseContract
   def post_addGame(result)
     check_database_id(result)
     gameExist?(result)
+    class_invariant
   end
 
   def pre_addGameResults(game_id, winner_id)
+    class_invariant
     check_database_id(game_id)
     check_database_id(winner_id)
 
@@ -318,21 +347,26 @@ module ServerDatabaseContract
 
   def post_addGameResults(result)
     check_database_id(result)
+    class_invariant
   end
 
   def pre_addRestorablePlayer(game_id, player_id)
+    class_invariant
     check_database_id(game_id)
     check_database_id(player_id)
 
     gameExist?(game_id)
     player_exist?(player_id)
+    class_invariant
   end
 
   def post_addRestorablePlayer(result)
     check_database_id(result)
+    class_invariant
   end
 
   def pre_addPlayerGameResults(game_results_id, player_id, tokens)
+    class_invariant
     check_database_id(game_results_id)
     check_database_id(player_id)
     player_exist?(player_id)
@@ -344,34 +378,42 @@ module ServerDatabaseContract
 
   def post_addPlayerGameResults(result)
     check_database_id(result)
+    class_invariant
   end
 
   def pre_gameExist?(game_id)
+    class_invariant
     check_database_id(game_id)
   end
 
   def post_gameExist?(result)
     assert(result==true || result==false)
+    class_invariant
   end
 
   def pre_gameComplete?(game_id)
+    class_invariant
     check_database_id(game_id)
     gameExist?(game_id)
   end
 
   def post_gameComplete?(result)
     assert(result==true || result==false)
+    class_invariant
   end
 
   def pre_player_exist?(name)
+    class_invariant
     check_name(name)
   end
 
   def post_player_exist?(result)
     assert(result==-1 || result >= 0)
+    class_invariant
   end
 
   def pre_get_single_row_field(sql, empty_default, *args)
+    class_invariant
     assert(sql!=nil)
     assert(sql.is_a?(String))
     assert(sql.count("?") == args.length)
@@ -379,18 +421,22 @@ module ServerDatabaseContract
 
   def post_get_single_row_field(result)
     #None
+    class_invariant
   end
 
   def pre_player_create(name)
+    class_invariant
     check_name(name)
     assert(!player_exist?(name))
   end
 
   def post_player_create(name)
     assert(player_exist?(name))
+    class_invariant
   end
 
   def pre_insert_row(sql, *args)
+    class_invariant
     assert(sql!=nil)
     assert(sql.is_a?(String))
     assert(sql.count("?") == args.length)
@@ -398,6 +444,7 @@ module ServerDatabaseContract
 
   def post_insert_row(result)
     check_database_id(result)
+    class_invariant
   end
 
 end
