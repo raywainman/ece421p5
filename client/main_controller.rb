@@ -120,7 +120,7 @@ class MainController
   end
 
   def on_join_clicked
-    @id = @view.game_id.text.to_i
+    @id = @view.games_list.selection.selected.get_value(1)
     ip_address = Socket.ip_address_list[5].ip_address
     server_object = XMLRPC::Client.new(@view.ip_address.text, "/", 8080)
     @server = server_object.proxy("server")
@@ -138,6 +138,18 @@ class MainController
     #Then show the board
     @view.show_board("ECE 421 Project 5")
     start_win_timer()
+  end
+
+  def on_refresh_clicked
+    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", 8080)
+    server = server_object.proxy("server")
+    games = Marshal.load(server.get_open_games())
+    @view.games_list.model.clear
+    games.each { |id, name|
+      row = @view.games_list.model.insert(0)
+      row.set_value(0, name)
+      row.set_value(1, id)
+    }
   end
 
   def start_win_timer

@@ -138,4 +138,25 @@ class ServerManager
       puts e.backtrace
     end
   end
+
+  def get_open_games()
+    begin
+      games = {}
+      @games.each { |id, game|
+        full = true
+        game.players.each { |player|
+          if player.name == ""
+            full = false
+          end
+        }
+        if !full
+          games[id] = game.game_name
+        end
+      }
+      return Marshal.dump(games)
+    rescue Exception => e
+      puts e
+      puts e.backtrace
+    end
+  end
 end

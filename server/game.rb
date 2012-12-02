@@ -14,7 +14,7 @@ require_relative "./contracts/game_contracts"
 class Game
   include GameContracts
   
-  attr_reader :players, :winner, :winner_name
+  attr_reader :players, :winner, :winner_name, :game_name
   
   # Creates a new instance of the game given a GameType, a list of Player objects
   # and a View object to update

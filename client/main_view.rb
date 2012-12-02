@@ -16,7 +16,7 @@ class MainView
 
   # Expose form widgets and other important components
   attr_reader :humans, :computers, :connect4_radiobutton, :otto_radiobutton, :easy, :medium,
-  :col_selected, :win_dialog, :board, :help, :ip_address, :game_id
+  :col_selected, :win_dialog, :board, :help, :ip_address, :games_list
   # Initializes GUI via .glade file and gets all the widgets
   def initialize()
     #initialize_preconditions()
@@ -52,6 +52,11 @@ class MainView
 
   def show_error_dialog()
     @error_dialog.show()
+  end
+
+  def show_games_dialog()
+    @games_list.hide_on_delete()
+    @games_list.show()
   end
 
   #+++++++++++++++++++++Helper functions, not signal handlers!++++++++++++++++++++
@@ -167,6 +172,7 @@ class MainView
   # Gets all widgets into useful class variables
   def get_all_widgets
     #Get all miscellaneous widgets
+    @games_list=@builder.get_object("treeview1")
     @game_id=@builder.get_object("entry35") # TEMP
     @player_name=@builder.get_object("entry1")
     @ip_address=@builder.get_object("entry2")
