@@ -16,7 +16,7 @@ class MainView
 
   # Expose form widgets and other important components
   attr_reader :humans, :computers, :connect4_radiobutton, :otto_radiobutton, :easy, :medium,
-  :col_selected, :win_dialog, :board, :help
+  :col_selected, :win_dialog, :board, :help, :ip_address
   # Initializes GUI via .glade file and gets all the widgets
   def initialize()
     #initialize_preconditions()
@@ -154,11 +154,21 @@ class MainView
     update_player_labels_postconditions
   end
 
+  def get_player_name
+    if @player_name.text == ""
+      return "PLAYER1"
+    else
+      return @player_name.text
+    end
+  end
+
   private
 
   # Gets all widgets into useful class variables
   def get_all_widgets
     #Get all miscellaneous widgets
+    @player_name=@builder.get_object("entry1")
+    @ip_address=@builder.get_object("entry2")
     @error_dialog=@builder.get_object("errordialog")
     @board=@builder.get_object("board")
     @win_dialog=@builder.get_object("win_dialog")

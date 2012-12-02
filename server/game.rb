@@ -82,12 +82,12 @@ class Game
   # the appropriate action.
   def is_end?
     winner = is_win()
-    if winner != -1 # 20 == no winner
-      puts "Winner " + winner.to_s
+    if winner != -1
+      winner_name = @players[winner].name
+      puts "Winner " + winner_name
       @players.each { |player|
         if player.is_a?(HumanPlayer)
-          puts "CALLING WIN"
-          player.rpc.win("bla")
+          player.rpc.win(winner_name)
         end
       }
       return true
@@ -146,6 +146,7 @@ class Game
         player.rpc.update(Marshal.dump(state.grid), state.active_player)
       end
     }
+    puts "OKEY"
   end
 
   def get_player_names()

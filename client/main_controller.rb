@@ -17,9 +17,6 @@ class MainController
   def initialize(view, local_port)
     @view = view
     @local_port = local_port
-
-    server_object = XMLRPC::Client.new("127.0.0.1", "/", 16000)
-    @server = server_object.proxy("server")
     @winner = -1
   end
 
@@ -102,9 +99,13 @@ class MainController
 
     humans = @view.humans.text.to_i
     computers = @view.computers.text.to_i
-    puts IPSocket.getaddress(Socket.gethostname)
-    @player_name = "ray"
-    @id = @server.create_game("some game", humans, computers, difficulty, "ray", game_type, "127.0.0.1", @local_port)
+
+    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", 8080)
+    @server = server_object.proxy("server")
+
+    ip_address = Socket.ip_address_list[5].ip_address
+    @player_name = @view.get_player_name
+    @id = @server.create_game("some game", humans, computers, difficulty, @player_name, game_type, ip_address, @local_port)
 
     players = @server.get_players(@id)
     @view.initialize_players(players)
@@ -117,12 +118,16 @@ class MainController
     #  puts e.message
     #  @view.show_error_dialog
     # end
+    return true
   end
 
   def on_join_clicked
     @id = 0
-    @player_name = "ray2"
-    result = @server.join_game(@id, "ray2", "127.0.0.1", 16002)
+    ip_address = Socket.ip_address_list[5].ip_address
+    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", 8080)
+    @server = server_object.proxy("server")
+    @player_name = @view.get_player_name
+    result = @server.join_game(@id, @player_name, ip_address, @local_port)
     if !result
       return
     end

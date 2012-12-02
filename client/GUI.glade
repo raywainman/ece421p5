@@ -1182,6 +1182,7 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">&#x25CF;</property>
+                <property name="text" translatable="yes">127.0.0.1</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>

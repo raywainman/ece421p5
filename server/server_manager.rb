@@ -35,6 +35,8 @@ class ServerManager
         players << HumanPlayer.new
       }
       players[0].set_name(player)
+      puts hostname
+      puts host_port.to_s
       server_object = XMLRPC::Client.new(hostname, "/", host_port)
       client = server_object.proxy("client")
       players[0].set_rpc(client)
@@ -50,14 +52,18 @@ class ServerManager
 
   def join_game(id, player_name, hostname, host_port)
     @locks[id].synchronize {
-      index = -1
+      @games[id].players.each { |player|
+        if player.name == player_name
+          return false
+        end
+      }
       @games[id].players.each { |player|
         if player.name == ""
           player.set_name(player_name)
           server_object = XMLRPC::Client.new(hostname, "/", host_port)
           client = server_object.proxy("client")
           player.set_rpc(client)
-          
+
           new_players = @games[id].get_player_names()
           @games[id].players.each { |other_player|
             if other_player.is_a?(HumanPlayer) && other_player != player
@@ -65,7 +71,7 @@ class ServerManager
               other_player.rpc.initialize_players(new_players)
             end
           }
-          
+
           return true
         end
       }
@@ -81,6 +87,8 @@ class ServerManager
 
   def make_move(id, player, column)
     @locks[id].synchronize {
+      puts player
+      puts column.to_s
       return @games[id].make_move(player, column)
     }
   end
