@@ -2,7 +2,7 @@ require_relative "./ai_player"
 require_relative "./connect4"
 require_relative "./grid"
 require_relative "./human_player"
-require_relative "./state"
+require_relative "../state"
 require_relative "./contracts/game_contracts"
 
 # Main game object. All game logic is amalgamated here.
