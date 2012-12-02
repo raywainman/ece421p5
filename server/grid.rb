@@ -11,6 +11,9 @@ require_relative "./contracts/grid_contracts"
 class Grid
   include Enumerable
   include GridContracts
+  
+  attr_reader :grid
+  
   # Creates a new empty grid
   def initialize()
     @grid = Array.new(6) { Array.new(7) }

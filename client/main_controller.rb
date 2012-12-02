@@ -1,9 +1,9 @@
-require_relative "./ai_player"
-require_relative "./connect4"
-require_relative "./game"
-require_relative "./human_player"
-require_relative "./otto"
+require "xmlrpc/client"
+require "socket"
+
 require_relative "./contracts/main_controller_contracts"
+require_relative "../state"
+require_relative "../server/server_manager"
 
 # Controller object for the MainView object.
 
@@ -14,8 +14,13 @@ require_relative "./contracts/main_controller_contracts"
 
 class MainController
   include MainControllerContracts
-  def initialize(view)
+  def initialize(view, local_port)
     @view = view
+    @local_port = local_port
+
+    server_object = XMLRPC::Client.new("127.0.0.1", "/", 16000)
+    @server = server_object.proxy("server")
+    @winner = -1
   end
 
   # MAIN MENU SIGNALS
@@ -81,34 +86,77 @@ class MainController
 
   # Start button clicked
   def on_start_clicked
-    begin
-      #Set game type based on radio buttons
-      if @view.connect4_radiobutton.active?
-        game_type = Connect4.instance
-      else
-        game_type = Otto.instance
-      end
-      players = []
-      @view.humans.text.to_i.times {
-        players << HumanPlayer.new
-      }
-      difficulty = 0
-      if @view.easy.active?
-        difficulty = 0.80
-      elsif @view.medium.active?
-        difficulty = 0.40
-      end
-      @view.computers.text.to_i.times {
-        players << AIPlayer.new(difficulty)
-      }
-      @game = Game.new(game_type, players, @view)
-      @view.reset_board_images()
-      #Then show the board
-      @view.show_board(game_type.game_name + " Playing Area")
-    rescue Exception => e
-      puts e.message
-      @view.show_error_dialog
+    #begin
+    #Set game type based on radio buttons
+    if @view.connect4_radiobutton.active?
+      game_type = "connect4"
+    else
+      game_type = "otto"
     end
+    difficulty = 0
+    if @view.easy.active?
+      difficulty = 0.80
+    elsif @view.medium.active?
+      difficulty = 0.40
+    end
+
+    humans = @view.humans.text.to_i
+    computers = @view.computers.text.to_i
+    puts IPSocket.getaddress(Socket.gethostname)
+    @player_name = "ray"
+    @id = @server.create_game("some game", humans, computers, difficulty, "ray", game_type, "127.0.0.1", @local_port)
+
+    players = @server.get_players(@id)
+    @view.initialize_players(players)
+
+    @view.reset_board_images()
+    #Then show the board
+    @view.show_board(game_type + " Playing Area")
+    start_win_timer()
+    #rescue Exception => e
+    #  puts e.message
+    #  @view.show_error_dialog
+    # end
+  end
+
+  def on_join_clicked
+    @id = 0
+    @player_name = "ray2"
+    result = @server.join_game(@id, "ray2", "127.0.0.1", 16002)
+    if !result
+      return
+    end
+    players = @server.get_players(@id)
+    @view.initialize_players(players)
+    grid, active_player = @server.update(@id)
+    @view.update(Marshal.load(grid), active_player)
+
+    @view.reset_board_images()
+    #Then show the board
+    @view.show_board("ECE 421 Project 5")
+    start_win_timer()
+  end
+
+  def start_win_timer
+    @win_thread = Gtk.timeout_add(1000) {
+      if @winner != -1 && @winner != 0
+        @view.show_win(@winner.to_s)
+        false
+      elsif @winner == 0
+        @view.show_tie()
+        false
+      else
+        true
+      end
+    }
+  end
+
+  def set_win(win)
+    @winner = win
+  end
+
+  def clean_up
+    Gtk.timeout_remove(@win_thread)
   end
 
   def on_help_clicked
@@ -127,27 +175,26 @@ class MainController
 
   # Mouse clicked on one of the columns
   def on_eventbox1_button_release_event
-    begin
-      if !@game.is_column_full?(@view.col_selected)
-        @game.make_move(@view.col_selected)
-      end
-    rescue Exception => e
-      puts e.message
-      @view.show_error_dialog
-    end
+    #begin
+    @server.make_move(@id, @player_name, @view.col_selected)
+    # @view.update(Marshal.load(@server.get_update(@id)))
+    #rescue Exception => e
+    #  puts e.message
+    #  @view.show_error_dialog
+    #end
   end
 
   # Mouse hovered over one of the columns
   def on_eventbox1_motion_notify_event(widget,event)
-    begin
-      #get the column
-      @view.set_column_selected(event.x)
-      #show corresponding arrow
-      @view.show_arrow()
-    rescue Exception => e
-      puts e.message
-      @view.show_error_dialog
-    end
+    #begin
+    #get the column
+    @view.set_column_selected(event.x)
+    #show corresponding arrow
+    @view.show_arrow()
+    #rescue Exception => e
+    #  puts e.message
+    #  @view.show_error_dialog
+    #end
   end
 
   # Board hidden
@@ -179,4 +226,5 @@ class MainController
     @view.board.hide()
     @view.win_dialog.hide_on_delete()
   end
+
 end

@@ -25,4 +25,13 @@ module PlayerContracts
   def set_winning_token_postconditions()
     assert @winning_token != nil, "winning token must not be nil"
   end
+
+  def set_name_preconditions(name)
+    assert name.is_a?(String), "name must be a string"
+    assert name.size > 0, "name not be blank"
+  end
+
+  def set_name_postconditions()
+    assert @name != nil, "name must not be nil"
+  end
 end

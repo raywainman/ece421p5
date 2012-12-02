@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <interface>
   <requires lib="gtk+" version="2.18"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkAboutDialog" id="aboutdialog1">
-    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Help</property>
     <property name="resizable">False</property>
@@ -14,33 +13,15 @@
     <property name="authors">Dustin Durrand
 Kenneth Rodas
 Raymond Wainman</property>
-    <signal name="delete-event" handler="on_delete_help" swapped="no"/>
-    <signal name="response" handler="on_help_close" swapped="no"/>
+    <signal name="response" handler="on_help_close"/>
+    <signal name="delete_event" handler="on_delete_help"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="spacing">2</property>
-        <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area3">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="label" translatable="yes">Instructions:
 1. Select game type
 2. Select number of human players
@@ -61,56 +42,62 @@ diagonal the sequence "OTTO" if you
 are "O" or "TOOT" if you are "T".</property>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area3">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
       </object>
     </child>
   </object>
   <object class="GtkAdjustment" id="adjustment2">
+    <property name="value">1</property>
     <property name="lower">1</property>
     <property name="upper">4</property>
-    <property name="value">1</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="adjustment3">
+    <property name="value">1</property>
     <property name="lower">1</property>
     <property name="upper">3</property>
-    <property name="value">1</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkWindow" id="board">
     <property name="width_request">450</property>
-    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Playing Area</property>
     <property name="resizable">False</property>
     <property name="window_position">center-always</property>
     <property name="destroy_with_parent">True</property>
     <property name="transient_for">mainMenu</property>
-    <signal name="delete-event" handler="on_board_delete_event" swapped="no"/>
+    <signal name="delete_event" handler="on_board_delete_event"/>
     <child>
       <object class="GtkEventBox" id="eventbox1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="above_child">True</property>
-        <signal name="button-release-event" handler="on_eventbox1_button_release_event" swapped="no"/>
-        <signal name="motion-notify-event" handler="on_eventbox1_motion_notify_event" swapped="no"/>
+        <signal name="motion_notify_event" handler="on_eventbox1_motion_notify_event"/>
+        <signal name="button_release_event" handler="on_eventbox1_button_release_event"/>
         <child>
           <object class="GtkVBox" id="vbox7">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <child>
               <object class="GtkFixed" id="fixed1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="padding">7</property>
                 <property name="position">0</property>
               </packing>
@@ -118,118 +105,88 @@ are "O" or "TOOT" if you are "T".</property>
             <child>
               <object class="GtkHBox" id="hbox2">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkImage" id="p1_image">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="p1_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Player 1</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkImage" id="p2_image">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="p2_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Player 2</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkImage" id="p3_image">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="p3_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Player 3</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">5</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkImage" id="p4_image">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="stock">gtk-missing-image</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">6</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="p4_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Player 4</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">7</property>
                   </packing>
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkFixed" id="fixed2">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="padding">7</property>
                 <property name="position">2</property>
               </packing>
@@ -237,47 +194,12 @@ are "O" or "TOOT" if you are "T".</property>
             <child>
               <object class="GtkTable" id="table2">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="n_rows">6</property>
                 <property name="n_columns">9</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
                   <object class="GtkImage" id="img35">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -292,7 +214,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img28">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -307,7 +228,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img21">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -322,7 +242,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img14">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -337,7 +256,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img7">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -352,7 +270,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img0">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -365,7 +282,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img36">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -380,7 +296,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img29">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -395,7 +310,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img22">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -410,7 +324,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img15">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -425,7 +338,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img8">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -440,7 +352,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -453,7 +364,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img37">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -468,7 +378,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img30">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -483,7 +392,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img23">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -498,7 +406,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img16">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -513,7 +420,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img9">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -528,7 +434,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img2">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -541,7 +446,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img38">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -556,7 +460,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img31">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -571,7 +474,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img24">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -586,7 +488,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img17">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -599,7 +500,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img10">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -612,7 +512,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img3">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -623,7 +522,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img39">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -636,7 +534,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img32">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -649,7 +546,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img25">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -662,7 +558,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img18">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -675,7 +570,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img11">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -688,7 +582,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img4">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -699,7 +592,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img40">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -712,7 +604,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img33">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -725,7 +616,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img26">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -738,7 +628,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img19">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -751,7 +640,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img12">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -764,7 +652,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img5">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -775,7 +662,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img41">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -788,7 +674,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img34">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -801,7 +686,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img27">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -814,7 +698,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img20">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -827,7 +710,6 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img13">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
@@ -840,25 +722,12 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <object class="GtkImage" id="img6">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="pixbuf">resources/piece_empty.png</property>
                   </object>
                   <packing>
                     <property name="left_attach">7</property>
                     <property name="right_attach">8</property>
                   </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
@@ -898,8 +767,6 @@ are "O" or "TOOT" if you are "T".</property>
                 </child>
               </object>
               <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
                 <property name="position">3</property>
               </packing>
             </child>
@@ -908,12 +775,10 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="width_request">0</property>
                 <property name="height_request">50</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkArrow" id="arrow1">
                     <property name="width_request">50</property>
                     <property name="height_request">80</property>
-                    <property name="can_focus">False</property>
                     <property name="arrow_type">up</property>
                   </object>
                   <packing>
@@ -925,7 +790,6 @@ are "O" or "TOOT" if you are "T".</property>
                   <object class="GtkArrow" id="arrow2">
                     <property name="width_request">50</property>
                     <property name="height_request">80</property>
-                    <property name="can_focus">False</property>
                     <property name="arrow_type">up</property>
                   </object>
                   <packing>
@@ -937,7 +801,6 @@ are "O" or "TOOT" if you are "T".</property>
                   <object class="GtkArrow" id="arrow3">
                     <property name="width_request">50</property>
                     <property name="height_request">80</property>
-                    <property name="can_focus">False</property>
                     <property name="arrow_type">up</property>
                   </object>
                   <packing>
@@ -949,7 +812,6 @@ are "O" or "TOOT" if you are "T".</property>
                   <object class="GtkArrow" id="arrow4">
                     <property name="width_request">50</property>
                     <property name="height_request">80</property>
-                    <property name="can_focus">False</property>
                     <property name="arrow_type">up</property>
                   </object>
                   <packing>
@@ -961,7 +823,6 @@ are "O" or "TOOT" if you are "T".</property>
                   <object class="GtkArrow" id="arrow5">
                     <property name="width_request">50</property>
                     <property name="height_request">80</property>
-                    <property name="can_focus">False</property>
                     <property name="arrow_type">up</property>
                   </object>
                   <packing>
@@ -973,7 +834,6 @@ are "O" or "TOOT" if you are "T".</property>
                   <object class="GtkArrow" id="arrow6">
                     <property name="width_request">50</property>
                     <property name="height_request">80</property>
-                    <property name="can_focus">False</property>
                     <property name="arrow_type">up</property>
                   </object>
                   <packing>
@@ -985,7 +845,6 @@ are "O" or "TOOT" if you are "T".</property>
                   <object class="GtkArrow" id="arrow7">
                     <property name="width_request">50</property>
                     <property name="height_request">80</property>
-                    <property name="can_focus">False</property>
                     <property name="arrow_type">up</property>
                   </object>
                   <packing>
@@ -1006,23 +865,29 @@ are "O" or "TOOT" if you are "T".</property>
     </child>
   </object>
   <object class="GtkMessageDialog" id="errordialog">
-    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="modal">True</property>
     <property name="type_hint">dialog</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="message_type">error</property>
     <property name="buttons">close</property>
-    <signal name="response" handler="gtk_main_quit" swapped="no"/>
+    <signal name="response" handler="gtk_main_quit"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="spacing">2</property>
+        <child>
+          <object class="GtkLabel" id="label5">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Ouch. An Error occured. Please restart the application.</property>
+          </object>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <placeholder/>
@@ -1033,21 +898,8 @@ are "O" or "TOOT" if you are "T".</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label5">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Ouch. An Error occured. Please restart the application.</property>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -1056,32 +908,27 @@ are "O" or "TOOT" if you are "T".</property>
   <object class="GtkWindow" id="mainMenu">
     <property name="width_request">400</property>
     <property name="height_request">200</property>
-    <property name="can_focus">False</property>
     <property name="title" translatable="yes">ECE421 Project 4</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
-    <signal name="destroy" handler="gtk_main_quit" swapped="no"/>
+    <signal name="destroy" handler="gtk_main_quit"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <child>
           <object class="GtkTable" id="table1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="n_rows">3</property>
             <property name="n_columns">2</property>
             <child>
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Mode</property>
               </object>
             </child>
             <child>
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Humans</property>
               </object>
               <packing>
@@ -1092,7 +939,6 @@ are "O" or "TOOT" if you are "T".</property>
             <child>
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Computers</property>
               </object>
               <packing>
@@ -1103,11 +949,9 @@ are "O" or "TOOT" if you are "T".</property>
             <child>
               <object class="GtkVBox" id="vbox2">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkRadioButton" id="radiobutton1">
                     <property name="label" translatable="yes">Connect4</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -1115,26 +959,21 @@ are "O" or "TOOT" if you are "T".</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkRadioButton" id="radiobutton2">
                     <property name="label" translatable="yes">OTTO</property>
-                    <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
                     <property name="active">True</property>
                     <property name="draw_indicator">True</property>
                     <property name="group">radiobutton1</property>
-                    <signal name="toggled" handler="on_mode_changed" swapped="no"/>
+                    <signal name="toggled" handler="on_mode_changed"/>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -1150,15 +989,13 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">1</property>
-                <property name="invisible_char">•</property>
-                <property name="primary_icon_activatable">False</property>
-                <property name="secondary_icon_activatable">False</property>
+                <property name="invisible_char">&#x2022;</property>
                 <property name="primary_icon_sensitive">True</property>
                 <property name="secondary_icon_sensitive">True</property>
                 <property name="adjustment">adjustment2</property>
                 <property name="snap_to_ticks">True</property>
                 <property name="numeric">True</property>
-                <signal name="value-changed" handler="on_humans_changed" swapped="no"/>
+                <signal name="value_changed" handler="on_humans_changed"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -1171,36 +1008,29 @@ are "O" or "TOOT" if you are "T".</property>
             <child>
               <object class="GtkVBox" id="vbox3">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkSpinButton" id="spinbutton2">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">1</property>
-                    <property name="invisible_char">•</property>
-                    <property name="primary_icon_activatable">False</property>
-                    <property name="secondary_icon_activatable">False</property>
+                    <property name="invisible_char">&#x2022;</property>
                     <property name="primary_icon_sensitive">True</property>
                     <property name="secondary_icon_sensitive">True</property>
                     <property name="adjustment">adjustment3</property>
                     <property name="snap_to_ticks">True</property>
                     <property name="numeric">True</property>
-                    <signal name="value-changed" handler="on_computers_changed" swapped="no"/>
+                    <signal name="value_changed" handler="on_computers_changed"/>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkHBox" id="hbox1">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkRadioButton" id="radiobutton3">
                         <property name="label" translatable="yes">easy</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -1208,15 +1038,12 @@ are "O" or "TOOT" if you are "T".</property>
                         <property name="draw_indicator">True</property>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="radiobutton4">
                         <property name="label" translatable="yes">medium</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -1225,15 +1052,12 @@ are "O" or "TOOT" if you are "T".</property>
                         <property name="group">radiobutton3</property>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkRadioButton" id="radiobutton5">
                         <property name="label" translatable="yes">hard</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -1242,15 +1066,11 @@ are "O" or "TOOT" if you are "T".</property>
                         <property name="group">radiobutton3</property>
                       </object>
                       <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -1265,34 +1085,28 @@ are "O" or "TOOT" if you are "T".</property>
             </child>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkHSeparator" id="hseparator1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkHButtonBox" id="hbuttonbox1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <child>
               <object class="GtkButton" id="button2">
                 <property name="label" translatable="yes">Close</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="gtk_main_quit" swapped="no"/>
+                <signal name="clicked" handler="gtk_main_quit"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1303,11 +1117,10 @@ are "O" or "TOOT" if you are "T".</property>
             <child>
               <object class="GtkButton" id="button1">
                 <property name="label" translatable="yes">Help</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_help_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_help_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1318,11 +1131,10 @@ are "O" or "TOOT" if you are "T".</property>
             <child>
               <object class="GtkButton" id="button3">
                 <property name="label" translatable="yes">Start</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_start_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_start_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1330,10 +1142,23 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="position">2</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton" id="button4">
+                <property name="label" translatable="yes">Join</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_join_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="padding">5</property>
             <property name="position">2</property>
           </packing>
@@ -1342,7 +1167,6 @@ are "O" or "TOOT" if you are "T".</property>
     </child>
   </object>
   <object class="GtkMessageDialog" id="win_dialog">
-    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="modal">True</property>
     <property name="destroy_with_parent">True</property>
@@ -1350,38 +1174,32 @@ are "O" or "TOOT" if you are "T".</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">board</property>
     <property name="message_type">other</property>
-    <signal name="delete-event" handler="on_win_dialog_delete_event" swapped="no"/>
+    <signal name="delete_event" handler="on_win_dialog_delete_event"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="spacing">4</property>
         <child>
           <object class="GtkLabel" id="winner_label">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="label" translatable="yes">
 </property>
           </object>
           <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="playagain_button">
                 <property name="label" translatable="yes">Play Again</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_playagain_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_playagain_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1392,11 +1210,10 @@ are "O" or "TOOT" if you are "T".</property>
             <child>
               <object class="GtkButton" id="return_to_main_button">
                 <property name="label" translatable="yes">Return To Main Menu</property>
-                <property name="use_action_appearance">False</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_return_to_main_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_return_to_main_button_clicked"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1407,7 +1224,6 @@ are "O" or "TOOT" if you are "T".</property>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">1</property>
           </packing>

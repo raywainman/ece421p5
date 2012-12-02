@@ -9,12 +9,15 @@ require "test/unit"
 
 module AIPlayerContracts
   include Test::Unit::Assertions
-  def initialize_preconditions(difficulty)
+  def initialize_preconditions(name, difficulty)
+    assert name.is_a?(String), "name must be a string"
+    assert name.size > 0, "name not be blank"
     assert difficulty >= 0, "difficulty must be a number between 0 and 1"
     assert difficulty <= 1, "difficulty must be a number between 0 and 1"
   end
 
   def initialize_postconditions()
+    assert @name != nil, "name must not be nil"
     assert @difficulty >= 0, "difficulty must be a number between 0 and 1"
     assert @difficulty <= 1, "difficulty must be a number between 0 and 1"
   end

@@ -10,7 +10,11 @@ require_relative "./contracts/player_contracts"
 class Player
   include PlayerContracts
 
-  attr_reader :token, :winning_token
+  attr_reader :token, :winning_token, :name
+  
+  def initialize()
+    @name = ""
+  end
   
   # Computes a move to be played by the player, returns the column number to
   # play
@@ -35,5 +39,15 @@ class Player
     set_winning_token_preconditions(winning_token)
     @winning_token = winning_token
     set_winning_token_postconditions()
+  end
+
+  def set_name(name)
+    set_name_preconditions(name)
+    @name = name
+    set_name_postconditions()
+  end
+
+  def to_s
+    return @name
   end
 end

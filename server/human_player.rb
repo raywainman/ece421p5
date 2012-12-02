@@ -11,6 +11,8 @@ require_relative "./contracts/human_player_contracts"
 class HumanPlayer < Player
   include HumanPlayerContracts
   
+  attr_reader :rpc
+  
   # Prompts the user to play a move from the command line
   # DEPRECATED when using the GUI
   def do_move(grid)
@@ -26,5 +28,9 @@ class HumanPlayer < Player
   # Returns a description of the player type
   def description()
     "Player"
+  end
+  
+  def set_rpc(connection)
+    @rpc = connection
   end
 end

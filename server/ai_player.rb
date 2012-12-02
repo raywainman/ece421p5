@@ -12,8 +12,9 @@ class AIPlayer < Player
   include AIPlayerContracts
   # Creates the AI Player with the given difficulty is the probability that
   # the AI makes a random move as opposed to a smart one
-  def initialize(difficulty)
-    initialize_preconditions(difficulty)
+  def initialize(name, difficulty)
+    initialize_preconditions(name, difficulty)
+    @name = name
     @difficulty = difficulty
     @SEQ_WEIGHT = 2
     @MY_MOVE_SENTINEL = "!"

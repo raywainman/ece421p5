@@ -10,7 +10,8 @@ require "test/unit"
 module StateContracts
   include Test::Unit::Assertions
   def initialize_preconditions(grid, active_player)
-    assert grid.is_a?(Grid), "invalid grid"
+    assert grid.respond_to?("[]"), "invalid grid"
+    assert grid[0].respond_to?("[]"), "invalid grid"
     assert active_player >= 0, "invalid active player"
     assert active_player < 4, "invalid active player"
   end

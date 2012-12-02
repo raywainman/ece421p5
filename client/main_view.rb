@@ -19,21 +19,21 @@ class MainView
   :col_selected, :win_dialog, :board, :help
   # Initializes GUI via .glade file and gets all the widgets
   def initialize()
-    initialize_preconditions()
+    #initialize_preconditions()
     Gtk.init
     @builder = Gtk::Builder::new
     @builder.add_from_file("GUI.glade")
     get_all_widgets()
     @col_selected=0
-    initialize_postconditions()
+    #initialize_postconditions()
   end
 
   # Sets the controller for this view and attaches all signal handlers
   def set_controller(controller)
-    set_controller_preconditions(controller)
+    #set_controller_preconditions(controller)
     @controller = controller
     @builder.connect_signals{ |handler| controller.method(handler) }
-    set_controller_postconditions()
+    #set_controller_postconditions()
   end
 
   # Shows the main application window (the main menu)
@@ -90,10 +90,11 @@ class MainView
 
   # Shows a dialog with the winning player
   def show_win(winner)
-    show_win_preconditions(winner)
+    #show_win_preconditions(winner)
     show_string = winner.to_s + " wins!"
     @win_dialog_label.text = show_string
     @win_dialog.show
+    #@controller.clean_up()
     show_win_postconditions()
   end
 
@@ -114,15 +115,20 @@ class MainView
   end
 
   # Updates the game board from the given state object
-  def update(state)
-    update_preconditions(state)
-    state.grid.each_with_index { |e, row, col|
-      if e != nil
-        @imageArray[row][col].set("resources/piece_" + e.to_s + ".png")
-      end
+  def update(grid, active_player)
+    #update_preconditions(state)
+    grid.each_with_index { |row_obj, row|
+      row_obj.each_with_index { |e, col|
+        if e != nil
+          resource = "resources/piece_" + e.to_s + ".png"
+          if @imageArray[row][col].file != resource && @imageArray[row][col].file == "resources/piece_empty.png"
+            @imageArray[row][col].set(resource)
+          end
+        end
+      }
     }
     #updates active player
-    update_player_labels(state.active_player)
+    update_player_labels(active_player)
     update_postconditions()
   end
 

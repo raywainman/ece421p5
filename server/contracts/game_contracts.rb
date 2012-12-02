@@ -9,7 +9,7 @@ require "test/unit"
 
 module GameContracts
   include Test::Unit::Assertions
-  def initialize_preconditions(game_type, players, view)
+  def initialize_preconditions(game_type, players, game_name)
     assert game_type.is_a?(GameType), "game_type argument must be a GameType object"
     assert players.respond_to?("[]"), "players argument must be a container of players"
     assert players.respond_to?("size"), "players argument must have a size function"
@@ -18,9 +18,7 @@ module GameContracts
     players.each{ |player|
       assert player.is_a?(Player), "players argument must be all Player objects"
     }
-    assert view.respond_to?("update"), "view must respond to update(state)"
-    assert view.respond_to?("initialize_players"), "view must respond to initialize_players()"
-    assert view.respond_to?("reset_board_images"), "view must respond to reset_board_images()"
+    assert game_name.is_a?(String), "game_name must be a string"
   end
 
   def initialize_postconditions()
@@ -28,7 +26,7 @@ module GameContracts
     assert @players != nil, "players class element cannot be nil"
     assert @game_type != nil, "game_type class element cannot be nil"
     assert @active_player == 0, "active_player must be first player"
-    assert @view != nil, "view must not be nil"
+    assert @game_name != nil, "view must not be nil"
   end
 
   def reset_preconditions()
@@ -55,7 +53,7 @@ module GameContracts
   end
 
   def is_win_postconditions(result)
-    assert result == -1 || (result >= 0 && result < @players.size), "result must be a player value"
+    assert result == 20 || (result >= 0 && result < @players.size), "result must be a player value"
   end
 
   def show_win_preconditions(winner)
@@ -67,9 +65,16 @@ module GameContracts
     # No postconditions
   end
 
-  def make_move_preconditions(column)
+  def make_move_preconditions(player, column)
     assert column >= 0, "column not within range"
     assert column < 7, "column not within range"
+    player_contained = false
+    @players.each { |player_obj|
+      if player_obj.name == player
+        player_contained = true
+      end
+    }
+    assert player_contained, "invalid player id"
   end
 
   def make_move_postconditions()
@@ -83,6 +88,6 @@ module GameContracts
     assert @game_type != nil, "game_type class element cannot be nil"
     assert @active_player >= 0, "active_player must be a positive integer"
     assert @active_player < @players.size, "active_player must be an actual player"
-    assert @view != nil, "view must not be nil"
+    assert @game_name != nil, "game_name must not be nil"
   end
 end
