@@ -96,7 +96,7 @@ module ServerDatabaseContract
 
   def post_get_player_id(id, name)
     check_database_id(id)
-    player_exist?(name)
+    assert(player_exist?(name) >= 0)
     class_invariant
   end
 
@@ -353,8 +353,7 @@ class_invariant
     check_database_id(game_id)
     check_database_id(winner_id)
 
-    gameExist?(game_id)
-    player_exist?(winner_id)
+   assert(gameExist?(game_id))
 
   end
 
@@ -368,8 +367,7 @@ class_invariant
     check_database_id(game_id)
     check_database_id(player_id)
 
-    gameExist?(game_id)
-    player_exist?(player_id)
+    assert(gameExist?(game_id))
     class_invariant
   end
 
@@ -382,7 +380,6 @@ class_invariant
     class_invariant
     check_database_id(game_results_id)
     check_database_id(player_id)
-    player_exist?(player_id)
     assert(tokens!=nil)
     assert(tokens.respond_to?("to_i"))
     assert(tokens.to_i > 0)
@@ -444,7 +441,7 @@ class_invariant
   end
 
   def post_player_create(name)
-    assert(player_exist?(name))
+    assert(player_exist?(name)>=0)
     class_invariant
   end
 

@@ -10,6 +10,7 @@ class ServerDatabase
   @@PASS = "asdf"
   @@DB = "ECE421P5"
   @@NOT_FOUND_ID = -1
+  
   def initialize(dbConnection)
     pre_initialize(dbConnection)
     @dbh = dbConnection
@@ -56,7 +57,7 @@ class ServerDatabase
     name_string = name.to_s
 
     player_id = player_exist?(name_string)
-
+    
     if(player_id == @@NOT_FOUND_ID)
       player_id = player_create(name_string)
     end
@@ -442,7 +443,7 @@ class ServerDatabase
     sql += "VALUES (?,?)"
 
     result = insert_row(sql, game_id, player_id)
-
+    
     post_addRestorablePlayer(result)
     result
   end
