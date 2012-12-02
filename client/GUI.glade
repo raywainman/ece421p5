@@ -907,7 +907,7 @@ are "O" or "TOOT" if you are "T".</property>
   </object>
   <object class="GtkWindow" id="mainMenu">
     <property name="width_request">400</property>
-    <property name="height_request">350</property>
+    <property name="height_request">400</property>
     <property name="title" translatable="yes">ECE421 Project 4</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
@@ -918,6 +918,7 @@ are "O" or "TOOT" if you are "T".</property>
         <child>
           <object class="GtkTable" id="table6">
             <property name="visible">True</property>
+            <property name="n_rows">2</property>
             <property name="n_columns">2</property>
             <child>
               <object class="GtkLabel" id="label35">
@@ -939,6 +940,31 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkLabel" id="label36">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">  Server IP  </property>
+              </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="entry2">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="invisible_char">&#x25CF;</property>
+                <property name="text" translatable="yes">127.0.0.1</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_padding">12</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="position">0</property>
@@ -956,13 +982,17 @@ are "O" or "TOOT" if you are "T".</property>
         <child>
           <object class="GtkTable" id="table1">
             <property name="visible">True</property>
-            <property name="n_rows">4</property>
+            <property name="n_rows">5</property>
             <property name="n_columns">2</property>
             <child>
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Mode</property>
               </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
             </child>
             <child>
               <object class="GtkLabel" id="label2">
@@ -970,8 +1000,8 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="label" translatable="yes">Humans</property>
               </object>
               <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
               </packing>
             </child>
             <child>
@@ -980,8 +1010,8 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="label" translatable="yes">Computers</property>
               </object>
               <packing>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
               </packing>
             </child>
             <child>
@@ -1019,6 +1049,8 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
@@ -1038,8 +1070,8 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
@@ -1116,8 +1148,8 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
@@ -1144,9 +1176,19 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">3</property>
-                <property name="bottom_attach">4</property>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
                 <property name="x_padding">12</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label56">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Create New Game</property>
+              </object>
+              <packing>
+                <property name="right_attach">2</property>
+                <property name="y_padding">10</property>
               </packing>
             </child>
             <child>
@@ -1169,27 +1211,8 @@ are "O" or "TOOT" if you are "T".</property>
         <child>
           <object class="GtkTable" id="table3">
             <property name="visible">True</property>
-            <property name="n_rows">2</property>
+            <property name="n_rows">3</property>
             <property name="n_columns">2</property>
-            <child>
-              <object class="GtkLabel" id="label53">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">  Server IP  </property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkEntry" id="entry2">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
-                <property name="text" translatable="yes">127.0.0.1</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="x_padding">12</property>
-              </packing>
-            </child>
             <child>
               <object class="GtkHButtonBox" id="hbuttonbox3">
                 <property name="visible">True</property>
@@ -1212,8 +1235,8 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
@@ -1224,9 +1247,35 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="invisible_char">&#x25CF;</property>
               </object>
               <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_padding">12</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label6">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Join/Resume Existing Game</property>
+              </object>
+              <packing>
+                <property name="right_attach">2</property>
+                <property name="y_padding">10</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label7">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Game ID</property>
+              </object>
+              <packing>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -1275,7 +1324,17 @@ are "O" or "TOOT" if you are "T".</property>
               </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkButton" id="button4">
+                <property name="label" translatable="yes">Statistics</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
             </child>
           </object>
           <packing>
