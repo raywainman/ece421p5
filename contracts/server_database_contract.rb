@@ -119,12 +119,12 @@ module ServerDatabaseContract
     assert(!gameComplete?(game_id))
     check_name(name)
   end
-  
+
   def post_add_restorable_player_to_game(result)
     check_database_id(result)
     class_invariant
   end
-  
+
   def pre_get_wins(name, limit_start, number_of_records)
     class_invariant
     check_name(name)
@@ -274,7 +274,7 @@ module ServerDatabaseContract
       check_name(element[1])
 
     }
-class_invariant
+    class_invariant
   end
 
   def pre_save_statistics(hash)
@@ -333,7 +333,7 @@ class_invariant
       assert(element[2].to_i > 0)
 
     }
-class_invariant
+    class_invariant
   end
 
   def pre_addGame(game_name, data)
@@ -353,7 +353,8 @@ class_invariant
     check_database_id(game_id)
     check_database_id(winner_id)
 
-   assert(gameExist?(game_id))
+    assert(gameExist?(game_id))
+    assert(player_exist_id?(winner_id))
 
   end
 
@@ -362,12 +363,22 @@ class_invariant
     class_invariant
   end
 
+  def pre_player_exist_id?(id)
+    check_database_id(id)
+    class_invariant
+  end
+
+  def post_player_exist_id?(result)
+    assert(result == true || result == false)
+  end
+
   def pre_addRestorablePlayer(game_id, player_id)
     class_invariant
     check_database_id(game_id)
     check_database_id(player_id)
 
     assert(gameExist?(game_id))
+    assert(player_exist_id?(player_id))
     class_invariant
   end
 
@@ -380,6 +391,7 @@ class_invariant
     class_invariant
     check_database_id(game_results_id)
     check_database_id(player_id)
+    assert(player_exist_id?(player_id))
     assert(tokens!=nil)
     assert(tokens.respond_to?("to_i"))
     assert(tokens.to_i > 0)
