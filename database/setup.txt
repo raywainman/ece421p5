@@ -1,0 +1,28 @@
+sudo apt-get install mysql-server
+sudo apt-get install mysql-client
+sudo apt-get install libmysqlclient-dev
+
+
+GEM - INSTALL BASED ON README.html
+
+(VERSION ON LAB MACHINES)
+http://rubyforge.org/frs/download.php/51087/mysql-ruby-2.8.1.tar.gz
+
+(FROM README)
+sudo ruby extconf.rb --with-mysql-dir=/usr/lib/mysql
+sudo make
+sudo make install
+
+use install.sql on your db - Note db is hardcoded(change as needed):
+  @@HOST = "localhost"
+  @@USER = "root"
+  @@PASS = "asdf"
+  @@DB = "ECE421P5"
+
+
+Remarks/Discussion Required:
+-Need to make sure no duplicate players in same game?
+-Need to make sure same player isn't in multiple games?
+-Make sure you cannot restore a game that is in progress (eliminated by previous one)
+-Make sure you pull a new INSTANCE of the object IN EVERY THREAD! (according to what I've read, if you try to use connections between threads in ruby it will randomly close for no reason - same issue as sqlite...)
+-No exception handling at this point..., was just worried about getting functionality so I'm not a blocker for anyone
