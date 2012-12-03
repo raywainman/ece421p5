@@ -1,4 +1,5 @@
 require "mysql"
+
 require_relative "../database_config"
 require_relative "./contracts/server_database_contract"
 
@@ -11,7 +12,6 @@ class ServerDatabase
   @@DB = DatabaseConfig.DB
   @@PORT = DatabaseConfig.PORT
   @@NOT_FOUND_ID = -1
-  
   def initialize(dbConnection)
     pre_initialize(dbConnection)
     @dbh = dbConnection
@@ -45,14 +45,16 @@ class ServerDatabase
   #Attempting to use this class after this call will cause exceptions (add to asserts?)
   def close_connection()
     pre_close_connection
-    generic_exception_handler{
-      @dbh.close()
-    }
+
+    @dbh.close()
     post_close_connection()
   end
 
   #Retrieves an ID for the player
   def get_player_id(name)
+
+    player_id = @@NOT_FOUND_ID
+
     pre_get_player_id(name.to_s)
 
     name_string = name.to_s
@@ -399,6 +401,48 @@ class ServerDatabase
     result
   end
 
+  #
+  # Returns the top players and their statistics
+  #
+  #returns [{name=>name, wins=>wins, loses=>loses, draws=>draws, avg_tokens=>avgtokens, avg_tokens_wins=>avg tokens for win},..]
+  def get_leader_board()
+    pre_get_leader_board()
+
+    sql = "SELECT * FROM player"
+    result = []
+
+    prep_stat = @dbh.prepare(sql)
+    stmt = prep_stat.execute()
+
+    row_count = stmt.num_rows()
+
+    if(row_count > 0)
+
+      row_count.times() {
+        row = stmt.fetch()
+
+        name = row[1]
+        wins = get_wins(name)
+        loses = get_loses(name)
+        draws = get_draws(name)
+        avgTokens = get_avg_tokens(name)
+        avgTokenForWin = get_avg_tokens_for_win(name)
+
+        player_status = {"NAME"=>name,"WINS"=>wins,"LOSES"=>loses, "DRAWS"=>draws, "AVG_TOKENS"=>avgTokens, "AVG_TOKENS_WINS"=>avgTokenForWin}
+
+        result << player_status
+
+      }
+
+    end
+
+    stmt.close()
+
+    sort_leader_board(result)
+    post_get_leader_board(result)
+    result
+  end
+
   ####################################
   ######   Private Methods     #######
   ####################################
@@ -585,20 +629,24 @@ class ServerDatabase
     check_database_id(result)
     result
   end
-
-  #Start of an generic exception handler...
-  def generic_exception_handler(*args, &block)
-    begin
-      yield
-    rescue Mysql::Error => e
-      puts "Error code: #{e.errno}"
-      puts "Error message: #{e.error}"
-      puts "Error SQLSTATE: #{e.sqlstate}" if e.respond_to?("sqlstate")
-
-      #gracefully clean up, possibly pass in things to be closed.
-
-      raise
+  
+def sort_leader_board(result)
+  result.sort!{ |x,y| 
+   
+    #most wins
+    sort_val = y["WINS"] <=> x["WINS"] 
+    
+    #if equal wins - least loses
+    if(sort_val == 0)
+      sort_val = x["LOSES"] <=> y["LOSES"]
     end
-  end
+    
+    #if equal wins - most draws
+    if(sort_val == 0)
+      sort_val = y["DRAWS"] <=> x["DRAWS"]
+    end
 
+    sort_val
+}
+end
 end

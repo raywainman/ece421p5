@@ -170,6 +170,39 @@ module ServerDatabaseContract
     assert(result>=0)
   end
 
+  def pre_get_leader_board()
+    #None
+  end
+  
+  def post_get_leader_board(result)
+    assert(result!=nil)
+    assert(result.respond_to?("[]"))
+    assert(result.respond_to?("each"))
+   
+    result.each() {|x|
+      assert(x!=nil)
+      assert(x.respond_to?("[]"))
+      assert(x.respond_to?("has_key?"))
+      assert(x.respond_to?("size"))
+      
+      assert(x.has_key?("NAME"))
+      assert(x.has_key?("WINS"))
+      assert(x.has_key?("LOSES"))
+      assert(x.has_key?("DRAWS"))
+      assert(x.has_key?("AVG_TOKENS"))
+      assert(x.has_key?("AVG_TOKENS_WINS"))
+    }
+    
+  end
+  
+  def pre_sort_leader_board(array)
+    post_get_leader_board(array)
+  end
+  
+  def post_sort_leader_board(array)
+    post_get_leader_board(array)
+  end
+  
   def pre_get_avg_tokens_for_win(name, limit_start, number_of_records)
     class_invariant
     check_name(name)
@@ -351,10 +384,12 @@ module ServerDatabaseContract
   def pre_addGameResults(game_id, winner_id)
     class_invariant
     check_database_id(game_id)
-    check_database_id(winner_id)
+    
+    if(winner_id!= -1)
+      check_database_id(winner_id)
+    end
 
     assert(gameExist?(game_id))
-    assert(player_exist_id?(winner_id))
 
   end
 
