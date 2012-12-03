@@ -37,6 +37,7 @@ class Game
     reset_preconditions()
     class_invariant()
     @grid.reset()
+    @winner = -1
     @active_player = 0
     @view.reset_board_images
     @view.update(get_state())

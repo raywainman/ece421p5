@@ -98,18 +98,15 @@ class MainController
     humans = @view.humans.text.to_i
     computers = @view.computers.text.to_i
 
-    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
-    @server = server_object.proxy("server")
-
     ip_address = ENV["HOSTNAME"]
     @player_name = @view.get_player_name
     game_name = @view.game_name.text
     if game_name == ""
       game_name = "Game " + Time.now.to_s
     end
-    @id = @server.create_game(game_name, humans, computers, difficulty, @player_name, game_type, ip_address, @local_port)
+    @id = get_rpc.create_game(game_name, humans, computers, difficulty, @player_name, game_type, ip_address, @local_port)
 
-    players = @server.get_players(@id)
+    players = get_rpc.get_players(@id)
     @view.initialize_players(players)
 
     @view.reset_board_images()
@@ -126,16 +123,14 @@ class MainController
   def on_join_clicked
     @id = @view.games_list.selection.selected.get_value(1)
     ip_address = ENV["HOSTNAME"]
-    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
-    @server = server_object.proxy("server")
     @player_name = @view.get_player_name
-    result = @server.join_game(@id, @player_name, ip_address, @local_port)
+    result = get_rpc.join_game(@id, @player_name, ip_address, @local_port)
     if !result
       return
     end
-    players = @server.get_players(@id)
+    players = get_rpc.get_players(@id)
     @view.initialize_players(players)
-    grid, active_player = @server.update(@id)
+    grid, active_player = get_rpc.update(@id)
     @view.update(Marshal.load(grid), active_player)
 
     @view.reset_board_images()
@@ -145,9 +140,7 @@ class MainController
   end
 
   def on_refresh_clicked
-    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
-    server = server_object.proxy("server")
-    games = Marshal.load(server.get_open_games())
+    games = Marshal.load(get_rpc.get_open_games())
     @view.games_list.model.clear
     games.each { |id, name|
       row = @view.games_list.model.insert(0)
@@ -195,7 +188,7 @@ class MainController
   # Mouse clicked on one of the columns
   def on_eventbox1_button_release_event
     #begin
-    @server.make_move(@id, @player_name, @view.col_selected)
+    get_rpc.make_move(@id, @player_name, @view.col_selected)
     # @view.update(Marshal.load(@server.get_update(@id)))
     #rescue Exception => e
     #  puts e.message
@@ -227,6 +220,7 @@ class MainController
   def on_return_to_main_button_clicked
     @view.win_dialog.hide()
     @view.board.hide()
+    @game.reset
   end
 
   # Play again button clicked
@@ -246,4 +240,8 @@ class MainController
     @view.win_dialog.hide_on_delete()
   end
 
+  def get_rpc
+    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
+    return server_object.proxy("server")
+  end
 end
