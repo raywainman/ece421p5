@@ -905,9 +905,17 @@ are "O" or "TOOT" if you are "T".</property>
       </object>
     </child>
   </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name game_name -->
+      <column type="gchararray"/>
+      <!-- column-name game_id -->
+      <column type="gint"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="mainMenu">
     <property name="width_request">400</property>
-    <property name="height_request">400</property>
+    <property name="height_request">600</property>
     <property name="title" translatable="yes">ECE421 Project 4</property>
     <property name="resizable">False</property>
     <property name="window_position">center</property>
@@ -982,7 +990,7 @@ are "O" or "TOOT" if you are "T".</property>
         <child>
           <object class="GtkTable" id="table1">
             <property name="visible">True</property>
-            <property name="n_rows">5</property>
+            <property name="n_rows">6</property>
             <property name="n_columns">2</property>
             <child>
               <object class="GtkLabel" id="label1">
@@ -990,8 +998,8 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="label" translatable="yes">Mode</property>
               </object>
               <packing>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
               </packing>
             </child>
             <child>
@@ -1000,8 +1008,8 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="label" translatable="yes">Humans</property>
               </object>
               <packing>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
               </packing>
             </child>
             <child>
@@ -1010,8 +1018,8 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="label" translatable="yes">Computers</property>
               </object>
               <packing>
-                <property name="top_attach">3</property>
-                <property name="bottom_attach">4</property>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
               </packing>
             </child>
             <child>
@@ -1049,8 +1057,8 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">1</property>
-                <property name="bottom_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
@@ -1070,8 +1078,8 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
@@ -1148,8 +1156,8 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">3</property>
-                <property name="bottom_attach">4</property>
+                <property name="top_attach">4</property>
+                <property name="bottom_attach">5</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
@@ -1176,8 +1184,8 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="right_attach">2</property>
-                <property name="top_attach">4</property>
-                <property name="bottom_attach">5</property>
+                <property name="top_attach">5</property>
+                <property name="bottom_attach">6</property>
                 <property name="x_padding">12</property>
               </packing>
             </child>
@@ -1189,6 +1197,30 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="right_attach">2</property>
                 <property name="y_padding">10</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label39">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Game Name</property>
+              </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="entry34">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="invisible_char">&#x25CF;</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+                <property name="x_padding">12</property>
               </packing>
             </child>
             <child>
@@ -1227,6 +1259,7 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="visible">True</property>
                 <child>
                   <object class="GtkTreeView" id="treeview1">
+                    <property name="height_request">110</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="model">liststore1</property>
@@ -1440,13 +1473,5 @@ are "O" or "TOOT" if you are "T".</property>
       <action-widget response="0">playagain_button</action-widget>
       <action-widget response="0">return_to_main_button</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name game_name -->
-      <column type="gchararray"/>
-      <!-- column-name game_id -->
-      <column type="gint"/>
-    </columns>
   </object>
 </interface>

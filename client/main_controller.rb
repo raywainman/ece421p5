@@ -103,7 +103,11 @@ class MainController
 
     ip_address = Socket.ip_address_list[5].ip_address
     @player_name = @view.get_player_name
-    @id = @server.create_game("some game", humans, computers, difficulty, @player_name, game_type, ip_address, @local_port)
+    game_name = @view.game_name.text
+    if game_name == ""
+      game_name = "Game " + Time.now.to_s
+    end
+    @id = @server.create_game(game_name, humans, computers, difficulty, @player_name, game_type, ip_address, @local_port)
 
     players = @server.get_players(@id)
     @view.initialize_players(players)
