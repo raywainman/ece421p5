@@ -150,11 +150,11 @@ class MainController
   end
 
   def on_statistics_clicked
-    @view.show_statistics
+    @view.show_statistics_dialog
   end
   
   def on_statistics_close_clicked
-    @view.hide_statistics
+    @view.hide_statistics_dialog
   end
   
   def start_win_timer
