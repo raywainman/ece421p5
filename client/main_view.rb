@@ -176,6 +176,7 @@ class MainView
   # Gets all widgets into useful class variables
   def get_all_widgets
     #Get all miscellaneous widgets
+    @statistics_dialog.get_object("stat_dialog")
     @port=@builder.get_object("entry9")
     @game_name=@builder.get_object("entry34")
     @games_list=@builder.get_object("treeview1")
