@@ -101,7 +101,7 @@ class MainController
     server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
     @server = server_object.proxy("server")
 
-    ip_address = Socket.ip_address_list[5].ip_address
+    ip_address = ENV["HOSTNAME"]
     @player_name = @view.get_player_name
     game_name = @view.game_name.text
     if game_name == ""
@@ -125,7 +125,7 @@ class MainController
 
   def on_join_clicked
     @id = @view.games_list.selection.selected.get_value(1)
-    ip_address = Socket.ip_address_list[5].ip_address
+    ip_address = ENV["HOSTNAME"]
     server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
     @server = server_object.proxy("server")
     @player_name = @view.get_player_name
