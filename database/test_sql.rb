@@ -46,5 +46,8 @@ game = { "GAME_ID" => id,
 
 db.save_statistics(game)
 
+puts "LEADER BOARD:\n"
+puts db.get_leader_board().to_s
+
 db.close_connection()
 db2.close_connection()
