@@ -1,0 +1,6 @@
+LAB - while in database folder of project:
+
+bash>mysql -u <<USER>> -p -h<<HOST>> -P<<PORT>>
+Password:*****
+
+mysql>source install.sql

@@ -1,15 +1,17 @@
 require "mysql"
-
+require_relative "../database_config"
 require_relative "./contracts/server_database_contract"
 
 class ServerDatabase
   include ServerDatabaseContract
 
-  @@HOST = "127.0.0.1"
-  @@USER = "root"
-  @@PASS = ""
-  @@DB = "ECE421P5"
+  @@HOST = DatabaseConfig.HOST
+  @@USER = DatabaseConfig.USER
+  @@PASS = DatabaseConfig.PASS
+  @@DB = DatabaseConfig.DB
+  @@PORT = DatabaseConfig.PORT
   @@NOT_FOUND_ID = -1
+  
   def initialize(dbConnection)
     pre_initialize(dbConnection)
     @dbh = dbConnection
@@ -26,7 +28,7 @@ class ServerDatabase
     result = nil
 
     begin
-      dbh = Mysql.real_connect(@@HOST, @@USER, @@PASS, @@DB)
+      dbh = Mysql.real_connect(@@HOST, @@USER, @@PASS, @@DB, @@PORT)
       result = new(dbh)
     rescue Mysql::Error => e
       puts "Error code: #{e.errno}"

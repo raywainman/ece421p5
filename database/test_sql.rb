@@ -1,3 +1,5 @@
+require_relative "../server_database"
+
 db = ServerDatabase.getInstance()
 db2 = ServerDatabase.getInstance()
 
