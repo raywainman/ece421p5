@@ -11,7 +11,7 @@ class Client
     Thread.new {
       @view.show
     }
-    @server = XMLRPC::Server.new(port, ENV["HOSTNAME"])
+    @server = XMLRPC::Server.new(port, ENV["HOSTNAME"], 100)
   end
 
   def start
