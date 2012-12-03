@@ -11,8 +11,6 @@ class ServerManager
     @games = {}
     @players = {}
     @locks = {}
-    # Create a master lock used when manipulating the two above data structures
-    @db = ServerDatabase.getInstance()
   end
 
   def create_game(game_name, humans, ais, ai_difficulty, player, game_type, hostname, host_port)
@@ -37,14 +35,14 @@ class ServerManager
 
       game = Game.new(game_type_obj, players, game_name)
       puts game.to_s
-      id = @db.create_game_id(game_name, human_players, Marshal.dump(game))
+      db = ServerDatabase.getInstance()
+      id = db.create_game_id(game_name, human_players, Marshal.dump(game))
       @games[id] = game
       @locks[id] = Mutex.new
       puts "Created game " + id.to_s
       puts hostname
       puts host_port.to_s
-      server_object = XMLRPC::Client.new(hostname, "/", host_port)
-      client = server_object.proxy("client")
+      client = {"ip" => hostname, "port"=>host_port}
       @players[id] = []
       @players[id] << client
       return id
@@ -68,11 +66,11 @@ class ServerManager
             player.set_name(player_name)
             new_players = @games[id].get_player_names()
             @players[id].each { |other_player|
-              other_player.initialize_players(new_players)
+              get_rpc(other_player).initialize_players(new_players)
             }
-            @db.add_restorable_player_to_game(id, player_name)
-            server_object = XMLRPC::Client.new(hostname, "/", host_port)
-            client = server_object.proxy("client")
+            db = ServerDatabase.getInstance()
+            db.add_restorable_player_to_game(id, player_name)
+            client = {"ip" => hostname, "port"=>host_port}
             @players[id] << client
             return true
           end
@@ -106,24 +104,25 @@ class ServerManager
         db.update_game(id, Marshal.dump(@games[id]))
         grid, active_player = @games[id].get_state()
         @players[id].each { |player_rpc|
-          player_rpc.update(Marshal.dump(grid), active_player)
+          get_rpc(player_rpc).update(Marshal.dump(grid), active_player)
         }
         if @games[id].winner != -1
           if @games[id].winner == -2
             @players[id].each { |player_rpc|
-              player_rpc.tie()
+              get_rpc(player_rpc).tie()
             }
           else
             @players[id].each { |player_rpc|
-              player_rpc.win(@games[id].winner_name)
+              get_rpc(player_rpc).win(@games[id].winner_name)
             }
           end
-          @db.set_game_complete(id)
+          db = ServerDatabase.getInstance()
+          db.set_game_complete(id)
           # TODO: Only collect statistics for multiplayer games
           stats = @games[id].collect_statistics
           stats["GAME_ID"] = id
           puts stats.inspect
-          @db.save_statistics(stats)
+          db.save_statistics(stats)
         end
 
         return result
@@ -165,5 +164,10 @@ class ServerManager
       puts e
       puts e.backtrace
     end
+  end
+
+  def get_rpc(player)
+    client_object = XMLRPC::Client.new(player["ip"], "/", player["port"])
+    return client_object.proxy("client")
   end
 end
