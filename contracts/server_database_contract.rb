@@ -173,18 +173,18 @@ module ServerDatabaseContract
   def pre_get_leader_board()
     #None
   end
-  
+
   def post_get_leader_board(result)
     assert(result!=nil)
     assert(result.respond_to?("[]"))
     assert(result.respond_to?("each"))
-   
+
     result.each() {|x|
       assert(x!=nil)
       assert(x.respond_to?("[]"))
       assert(x.respond_to?("has_key?"))
       assert(x.respond_to?("size"))
-      
+
       assert(x.has_key?("NAME"))
       assert(x.has_key?("WINS"))
       assert(x.has_key?("LOSES"))
@@ -192,17 +192,34 @@ module ServerDatabaseContract
       assert(x.has_key?("AVG_TOKENS"))
       assert(x.has_key?("AVG_TOKENS_WINS"))
     }
-    
+
   end
-  
+
   def pre_sort_leader_board(array)
     post_get_leader_board(array)
   end
-  
+
   def post_sort_leader_board(array)
     post_get_leader_board(array)
+
+    previous_wins = Integer::MAX
+    previous_losses = 0
+    previous_draws = Integer::MAX
+    array.each() { |x|
+      assert(x["WINS"] >= previous_wins)
+
+      if(x["WINS"] == previous_wins)
+        assert(x["LOSES"] <= previous_losses)
+      end
+
+      if(x["WINS"] == previous_wins && x["LOSES"] == previous_losses)
+        assert(x["DRAWS"] >= previous_draws)
+      end
+
+    }
+
   end
-  
+
   def pre_get_avg_tokens_for_win(name, limit_start, number_of_records)
     class_invariant
     check_name(name)
@@ -384,7 +401,7 @@ module ServerDatabaseContract
   def pre_addGameResults(game_id, winner_id)
     class_invariant
     check_database_id(game_id)
-    
+
     if(winner_id!= -1)
       check_database_id(winner_id)
     end
