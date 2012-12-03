@@ -38,6 +38,7 @@ class Game
     class_invariant()
     @grid.reset()
     @winner = -1
+    @winner_name = ""
     @active_player = 0
     @view.reset_board_images
     @view.update(get_state())

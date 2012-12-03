@@ -1,4 +1,5 @@
 require "mysql"
+
 require_relative "../database_config"
 require_relative "./contracts/server_database_contract"
 
@@ -11,7 +12,7 @@ class ServerDatabase
   @@DB = DatabaseConfig.DB
   @@PORT = DatabaseConfig.PORT
   @@NOT_FOUND_ID = -1
-  
+
   def initialize(dbConnection)
     pre_initialize(dbConnection)
     @dbh = dbConnection

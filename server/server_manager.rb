@@ -55,7 +55,7 @@ class ServerManager
 
   def join_game(id, player_name, hostname, host_port)
     begin
-      @locks[id].synchronize {
+      #@locks[id].synchronize {
         @games[id].players.each { |player|
           if player.name == player_name
             puts "Username is already in the game"
@@ -76,7 +76,7 @@ class ServerManager
           end
         }
         return false
-      }
+      #}
     rescue Exception => e
       puts e
       puts e.backtrace
@@ -85,9 +85,9 @@ class ServerManager
 
   def get_players(id)
     begin
-      @locks[id].synchronize {
+      #@locks[id].synchronize {
         return @games[id].get_player_names()
-      }
+      #}
     rescue Exception => e
       puts e
       puts e.backtrace
@@ -97,7 +97,7 @@ class ServerManager
   def make_move(id, player, column)
     begin
       db = ServerDatabase.getInstance()
-      @locks[id].synchronize {
+      #@locks[id].synchronize {
         puts player
         puts column.to_s
         result = @games[id].make_move(player, column)
@@ -125,7 +125,7 @@ class ServerManager
         end
 
         return result
-      }
+      #}
     rescue Exception => e
       puts e
       puts e.backtrace
@@ -134,10 +134,10 @@ class ServerManager
 
   def update(id)
     begin
-      @locks[id].synchronize {
+      #@locks[id].synchronize {
         grid, active_player = @games[id].get_state
         return Marshal.dump(grid), active_player
-      }
+      #}
     rescue Exception => e
       puts e
       puts e.backtrace

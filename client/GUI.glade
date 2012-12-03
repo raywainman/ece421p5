@@ -887,6 +887,9 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <placeholder/>
                 </child>
+                <child>
+                  <placeholder/>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -1699,21 +1702,6 @@ are "O" or "TOOT" if you are "T".</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="playagain_button">
-                <property name="label" translatable="yes">Play Again</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_playagain_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="return_to_main_button">
                 <property name="label" translatable="yes">Return To Main Menu</property>
                 <property name="use_action_appearance">False</property>
@@ -1725,7 +1713,7 @@ are "O" or "TOOT" if you are "T".</property>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">False</property>
-                <property name="position">1</property>
+                <property name="position">0</property>
               </packing>
             </child>
           </object>
@@ -1739,7 +1727,6 @@ are "O" or "TOOT" if you are "T".</property>
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">playagain_button</action-widget>
       <action-widget response="0">return_to_main_button</action-widget>
     </action-widgets>
   </object>

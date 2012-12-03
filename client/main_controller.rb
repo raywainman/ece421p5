@@ -220,23 +220,12 @@ class MainController
   def on_return_to_main_button_clicked
     @view.win_dialog.hide()
     @view.board.hide()
-    @game.reset
-  end
-
-  # Play again button clicked
-  def on_playagain_clicked
-    begin
-      @game.reset
-      @view.win_dialog.hide()
-    rescue Exception => e
-      puts e.message
-      @view.show_error_dialog
-    end
+    @view.reset_board_images()
+    @winner = -1
   end
 
   # Dialog hidden
   def on_win_dialog_delete_event
-    @view.board.hide()
     @view.win_dialog.hide_on_delete()
   end
 
