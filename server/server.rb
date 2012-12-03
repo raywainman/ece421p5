@@ -10,4 +10,4 @@ class Server
   end
 end
 
-Server.new(8080)
+Server.new(ARGV[0])
