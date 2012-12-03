@@ -11,8 +11,6 @@ class ServerManager
     @games = {}
     @players = {}
     @locks = {}
-    # Create a master lock used when manipulating the two above data structures
-    @db = ServerDatabase.getInstance()
   end
 
   def create_game(game_name, humans, ais, ai_difficulty, player, game_type, hostname, host_port)
@@ -37,7 +35,8 @@ class ServerManager
 
       game = Game.new(game_type_obj, players, game_name)
       puts game.to_s
-      id = @db.create_game_id(game_name, human_players, Marshal.dump(game))
+      db = ServerDatabase.getInstance()
+      id = db.create_game_id(game_name, human_players, Marshal.dump(game))
       @games[id] = game
       @locks[id] = Mutex.new
       puts "Created game " + id.to_s
@@ -69,7 +68,8 @@ class ServerManager
             @players[id].each { |other_player|
               get_rpc(other_player).initialize_players(new_players)
             }
-            @db.add_restorable_player_to_game(id, player_name)
+            db = ServerDatabase.getInstance()
+            db.add_restorable_player_to_game(id, player_name)
             client = {"ip" => hostname, "port"=>host_port}
             @players[id] << client
             return true
@@ -116,12 +116,13 @@ class ServerManager
               get_rpc(player_rpc).win(@games[id].winner_name)
             }
           end
-          @db.set_game_complete(id)
+          db = ServerDatabase.getInstance()
+          db.set_game_complete(id)
           # TODO: Only collect statistics for multiplayer games
           stats = @games[id].collect_statistics
           stats["GAME_ID"] = id
           puts stats.inspect
-          @db.save_statistics(stats)
+          db.save_statistics(stats)
         end
 
         return result
