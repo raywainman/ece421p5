@@ -98,7 +98,7 @@ class MainController
     humans = @view.humans.text.to_i
     computers = @view.computers.text.to_i
 
-    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", 8080)
+    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
     @server = server_object.proxy("server")
 
     ip_address = Socket.ip_address_list[5].ip_address
@@ -126,7 +126,7 @@ class MainController
   def on_join_clicked
     @id = @view.games_list.selection.selected.get_value(1)
     ip_address = Socket.ip_address_list[5].ip_address
-    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", 8080)
+    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
     @server = server_object.proxy("server")
     @player_name = @view.get_player_name
     result = @server.join_game(@id, @player_name, ip_address, @local_port)
@@ -145,7 +145,7 @@ class MainController
   end
 
   def on_refresh_clicked
-    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", 8080)
+    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
     server = server_object.proxy("server")
     games = Marshal.load(server.get_open_games())
     @view.games_list.model.clear
