@@ -104,6 +104,10 @@ class Game
       puts "Invalid move"
       return false
     end
+    if @winning == -1 || @winning == -2
+      puts "Game is over!"
+      return false
+    end
 
     puts "Player " + player + " made a move on column " + column.to_s
     @grid.make_move(@game_type.get_player_label(@active_player), column)
@@ -135,6 +139,21 @@ class Game
     return players
   end
 
+  def collect_statistics()
+    stats = {}
+    if @winning != -1 && @winning != -2
+      stats["WINNER"] = @winner_name
+    end
+    token_count = {}
+    @players.each{ |player|
+      if player.is_a?(HumanPlayer)
+        token_count[player.name] = @grid.count_tokens(player.token)
+      end
+    }
+    stats["PLAYERS"] = token_count
+    return stats
+  end
+  
   def to_s()
     str = "Game: " + @game_name
     str << ", Players: " + @players.to_s

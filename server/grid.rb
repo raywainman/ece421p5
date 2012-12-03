@@ -153,6 +153,16 @@ class Grid
     return result
   end
 
+  def count_tokens(token)
+    count = 0
+    each{ |value|
+      if value == token
+        count = count + 1
+      end
+    }
+    return count
+  end
+  
   def to_s
     str = ""
     @grid.each { |row|

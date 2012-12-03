@@ -70,6 +70,7 @@ class ServerManager
             @players[id].each { |other_player|
               other_player.initialize_players(new_players)
             }
+            @db.add_restorable_player_to_game(id, player_name)
             server_object = XMLRPC::Client.new(hostname, "/", host_port)
             client = server_object.proxy("client")
             @players[id] << client
@@ -117,6 +118,12 @@ class ServerManager
               player_rpc.win(@games[id].winner_name)
             }
           end
+          @db.set_game_complete(id)
+          # TODO: Only collect statistics for multiplayer games
+          stats = @games[id].collect_statistics
+          stats["GAME_ID"] = id
+          puts stats.inspect
+          @db.save_statistics(stats)
         end
 
         return result
