@@ -149,6 +149,14 @@ class MainController
     }
   end
 
+  def on_statistics_clicked
+    @view.show_statistics
+  end
+  
+  def on_statistics_close_clicked
+    @view.hide_statistics
+  end
+  
   def start_win_timer
     @win_thread = Gtk.timeout_add(1000) {
       if @winner != -1 && @winner != 0

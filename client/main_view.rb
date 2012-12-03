@@ -54,9 +54,13 @@ class MainView
     @error_dialog.show()
   end
 
-  def show_games_dialog()
-    @games_list.hide_on_delete()
-    @games_list.show()
+  def show_statistics_dialog()
+    @statistics_dialog.hide_on_delete()
+    @statistics_dialog.show()
+  end
+  
+  def hide_statistics_dialog()
+    @statistics_dialog.hide()
   end
 
   #+++++++++++++++++++++Helper functions, not signal handlers!++++++++++++++++++++
