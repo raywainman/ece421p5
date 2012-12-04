@@ -148,7 +148,7 @@ class MainView
     #update_preconditions(state)
     grid.each_with_index { |row_obj, row|
       row_obj.each_with_index { |e, col|
-        if e != nil
+        if e != ""
           resource = "resources/piece_" + e.to_s + ".png"
           if @imageArray[row][col].file != resource && @imageArray[row][col].file == "resources/piece_empty.png"
             @imageArray[row][col].set(resource)

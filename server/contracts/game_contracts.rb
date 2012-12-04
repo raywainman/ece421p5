@@ -83,7 +83,7 @@ module GameContracts
 
   def class_invariant()
     assert @grid.is_a?(Grid), "grid must be a Grid object"
-    @grid.class_invariant()
+    #@grid.class_invariant()
     assert @players != nil, "players class element cannot be nil"
     assert @game_type != nil, "game_type class element cannot be nil"
     assert @active_player >= 0, "active_player must be a positive integer"

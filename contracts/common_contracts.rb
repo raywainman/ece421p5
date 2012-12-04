@@ -21,7 +21,7 @@ module CommonContracts
     assert grid[0].respond_to?("each_with_index"), "grid[0] must respond to each_with_index"
     grid.each{ |row|
       row.each { |element|
-        assert element == nil || element.size == 1, "element must be a token"
+        assert element == "" || element.size == 1, "element must be a token"
       }
     }
   end
