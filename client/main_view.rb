@@ -119,11 +119,11 @@ class MainView
     show_string = winner.to_s + " wins!"
     @win_dialog_label.text = show_string
     @win_dialog.show
-    @win_dialog.hide_on_delete()
     show_win_postconditions()
   end
 
   def hide_win_dialog()
+    @win_dialog.hide_on_delete()
     @win_dialog.hide()
   end
 
