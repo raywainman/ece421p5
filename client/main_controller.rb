@@ -8,14 +8,28 @@ require_relative "./contracts/main_controller_contracts"
 # Author:: Dustin Durand (dddurand@ualberta.ca)
 # Author:: Kenneth Rodas (krodas@ualberta.ca)
 # Author:: Raymond Wainman (wainman@uablerta.ca)
-# (ECE 421 - Assignment #4)
+# (ECE 421 - Assignment #5)
 
 class MainController
   include MainControllerContracts
+  # Creates a new instance of the controller object. Accepts a view object and
+  # the local port that the client's XMLRPC server is running on.
   def initialize(view, local_port)
+    pre_initialize(view, local_port)
     @view = view
     @local_port = local_port
     @winner = -1
+    @local_ip = ENV["HOSTNAME"]
+    if @local_ip == nil
+      @local_ip = Socket.gethostname
+    end
+    post_initialize()
+  end
+
+  # Notifies the controller that a winner has been determined. Will be shown
+  # when the next win check timeout occurs.
+  def set_win(win)
+    @winner = win
   end
 
   # MAIN MENU SIGNALS
@@ -26,8 +40,8 @@ class MainController
     exit!
   end
 
-  # Number of human players changed
-  def on_humans_changed
+  # Number of players changed
+  def on_players_changed
     begin
       sum = @view.humans.text.to_i + @view.computers.text.to_i
       if @view.otto_radiobutton.active?
@@ -45,16 +59,6 @@ class MainController
           @view.computers.text = 1.to_s
         end
       end
-    rescue Exception => e
-      puts e.message
-      @view.show_error_dialog
-    end
-  end
-
-  # Number of computer players changed
-  def on_computers_changed
-    begin
-      on_humans_changed()
     rescue Exception => e
       puts e.message
       @view.show_error_dialog
@@ -81,101 +85,139 @@ class MainController
 
   # Start button clicked
   def on_start_clicked
-    #begin
-    #Set game type based on radio buttons
-    if @view.connect4_radiobutton.active?
-      game_type = "connect4"
-    else
-      game_type = "otto"
+    begin
+      game_type = @view.get_mode
+      difficulty = @view.get_difficulty
+      humans = @view.humans.text.to_i
+      computers = @view.computers.text.to_i
+      player_name = @view.get_player_name
+      game_name = @view.get_game_name
+      # Create game
+      @id = get_rpc.create_game(game_name, humans, computers, difficulty, player_name, game_type, @local_ip, @local_port)
+      # Update view
+      players = get_rpc.get_players(@id)
+      @view.initialize_players(players)
+      @view.reset_board_images()
+      @view.show_board()
+      start_win_timer()
+    rescue Exception => e
+      puts e.message
+      @view.show_error_dialog
     end
-    difficulty = 0
-    if @view.easy.active?
-      difficulty = 0.80
-    elsif @view.medium.active?
-      difficulty = 0.40
-    end
-
-    humans = @view.humans.text.to_i
-    computers = @view.computers.text.to_i
-
-    ip_address = ENV["HOSTNAME"]
-    if ip_address == nil
-      ip_address = Socket.gethostname
-    end
-    @player_name = @view.get_player_name
-    game_name = @view.game_name.text
-    if game_name == ""
-      game_name = "Game " + Time.now.to_s
-    end
-    puts ip_address
-    puts game_name
-    @id = get_rpc.create_game(game_name, humans, computers, difficulty, @player_name, game_type, ip_address, @local_port)
-
-    players = get_rpc.get_players(@id)
-    @view.initialize_players(players)
-
-    @view.reset_board_images()
-    #Then show the board
-    @view.show_board(game_type + " Playing Area")
-    start_win_timer()
-    #rescue Exception => e
-    #  puts e.message
-    #  @view.show_error_dialog
-    # end
     return true
   end
 
+  # Join button clicked
   def on_join_clicked
-    @id = @view.games_list.selection.selected.get_value(1)
-    ip_address = ENV["HOSTNAME"]
-    if ip_address == nil
-      ip_address = Socket.gethostname
+    begin
+      @id = @view.get_selected_game
+      if @id == nil
+        return
+      end
+      result = get_rpc.join_game(@id, @view.get_player_name, @local_ip, @local_port)
+      if !result
+        return
+      end
+      players = get_rpc.get_players(@id)
+      @view.initialize_players(players)
+      grid, active_player = get_rpc.update(@id)
+      @view.update(Marshal.load(grid), active_player)
+      @view.reset_board_images()
+      @view.show_board()
+      start_win_timer()
+    rescue Exception => e
+      puts e.message
+      @view.show_error_dialog
     end
-    @player_name = @view.get_player_name
-    result = get_rpc.join_game(@id, @player_name, ip_address, @local_port)
-    if !result
-      return
-    end
-    players = get_rpc.get_players(@id)
-    @view.initialize_players(players)
-    grid, active_player = get_rpc.update(@id)
-    @view.update(Marshal.load(grid), active_player)
-
-    @view.reset_board_images()
-    #Then show the board
-    @view.show_board("ECE 421 Project 5")
-    start_win_timer()
   end
 
+  # Refresh button clicked
   def on_refresh_clicked
-    games = Marshal.load(get_rpc.get_open_games(@view.get_player_name))
-    @view.games_list.model.clear
-    games.each { |id, name|
-      row = @view.games_list.model.insert(0)
-      row.set_value(0, name)
-      row.set_value(1, id)
-    }
+    begin
+      games = Marshal.load(get_rpc.get_open_games(@view.get_player_name))
+      @view.set_game_list(games)
+    rescue Exception => e
+      puts e.message
+      @view.show_error_dialog
+    end
   end
 
+  # Statistics button clicked
   def on_statistics_clicked
-    @view.statistics_table.model.clear()
-    leaderboard = Marshal.load(get_rpc.get_leaderboard())
-    leaderboard.each { |player|
-      row = @view.statistics_table.model.insert(leaderboard.size)
-      row.set_value(0, player["NAME"])
-      row.set_value(1, player["WINS"])
-      row.set_value(2, player["LOSES"])
-      row.set_value(3, player["DRAWS"])
-      row.set_value(4, player["AVG_TOKENS"])
-      row.set_value(5, player["AVG_TOKENS_WINS"])
-    }
-    @view.show_statistics_dialog
+    begin
+      @view.statistics_table.model.clear()
+      leaderboard = Marshal.load(get_rpc.get_leaderboard())
+      leaderboard.each { |player|
+        row = @view.statistics_table.model.insert(leaderboard.size)
+        row.set_value(0, player["NAME"])
+        row.set_value(1, player["WINS"])
+        row.set_value(2, player["LOSES"])
+        row.set_value(3, player["DRAWS"])
+        row.set_value(4, player["AVG_TOKENS"])
+        row.set_value(5, player["AVG_TOKENS_WINS"])
+      }
+      @view.show_statistics_dialog
+    rescue Exception => e
+      puts e.message
+      @view.show_error_dialog
+    end
   end
 
-  def on_statistics_close_clicked
+  # Close button in statistics dialog clicked
+  def on_statistics_close
     @view.hide_statistics_dialog
   end
 
+  # Help button clicked
+  def on_help_clicked
+    @view.show_help()
+  end
+
+  # Close button in help dialog clicked
+  def on_help_close
+    @view.hide_help()
+  end
+
+  # BOARD SIGNALS
+
+  # Mouse clicked on one of the columns
+  def on_column_clicked
+    begin
+      get_rpc.make_move(@id, @view.get_player_name, @view.col_selected)
+      @view.update(Marshal.load(@server.get_update(@id)))
+    rescue Exception => e
+      puts e.message
+      @view.show_error_dialog
+    end
+  end
+
+  # Mouse hovered over one of the columns
+  def on_column_hover(widget, event)
+    begin
+      #get the column
+      @view.set_column_selected(event.x)
+      #show corresponding arrow
+      @view.show_arrow()
+    rescue Exception => e
+      puts e.message
+      @view.show_error_dialog
+    end
+  end
+
+  # WIN DIALOG SIGNALS
+
+  # Return to main menu button clicked within the win dialog
+  def on_win_close
+    @view.hide_win_dialog()
+    @view.hide_board()
+    @view.reset_board_images()
+    @winner = -1
+  end
+
+  private
+
+  # Win check function, runs in a timer that fires every second and verifies if
+  # a win has occured. If so, makes appropriate view calls.
   def start_win_timer
     @win_thread = Gtk.timeout_add(1000) {
       if @winner != -1 && @winner != 0
@@ -190,74 +232,9 @@ class MainController
     }
   end
 
-  def set_win(win)
-    @winner = win
-  end
-
-  def clean_up
-    Gtk.timeout_remove(@win_thread)
-  end
-
-  def on_help_clicked
-    @view.help.show()
-  end
-
-  def on_help_close
-    @view.help.hide()
-  end
-
-  def on_delete_help
-    @view.help.hide_on_delete()
-  end
-
-  # BOARD SIGNALS
-
-  # Mouse clicked on one of the columns
-  def on_eventbox1_button_release_event
-    #begin
-    get_rpc.make_move(@id, @player_name, @view.col_selected)
-    # @view.update(Marshal.load(@server.get_update(@id)))
-    #rescue Exception => e
-    #  puts e.message
-    #  @view.show_error_dialog
-    #end
-  end
-
-  # Mouse hovered over one of the columns
-  def on_eventbox1_motion_notify_event(widget,event)
-    #begin
-    #get the column
-    @view.set_column_selected(event.x)
-    #show corresponding arrow
-    @view.show_arrow()
-    #rescue Exception => e
-    #  puts e.message
-    #  @view.show_error_dialog
-    #end
-  end
-
-  # Board hidden
-  def on_board_delete_event
-    @view.board.hide_on_delete()
-  end
-
-  # WIN DIALOG SIGNALS
-
-  # Return to main menu button clicked
-  def on_return_to_main_button_clicked
-    @view.win_dialog.hide()
-    @view.board.hide()
-    @view.reset_board_images()
-    @winner = -1
-  end
-
-  # Dialog hidden
-  def on_win_dialog_delete_event
-    @view.win_dialog.hide_on_delete()
-  end
-
+  # Gets an RPC Client object which connects to the user-specified server.
   def get_rpc
-    server_object = XMLRPC::Client.new(@view.ip_address.text, "/", @view.port.text.to_i)
+    server_object = XMLRPC::Client.new(@view.get_ip, "/", @view.get_port)
     return server_object.proxy("server")
   end
 end

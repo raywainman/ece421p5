@@ -15,19 +15,17 @@ class MainView
   include MainViewContracts
 
   # Expose form widgets and other important components
-  attr_reader :humans, :computers, :connect4_radiobutton, :otto_radiobutton, :easy, :medium,
-  :col_selected, :win_dialog, :board, :help, :ip_address, :games_list, :game_name, :port,
-  :statistics_table
+  attr_reader :humans, :computers, :col_selected, :statistics_table
   # Initializes GUI via .glade file and gets all the widgets
   def initialize()
     #initialize_preconditions()
     Gtk.init
     @builder = Gtk::Builder::new
-    @builder.add_from_file("GUI.glade")
+    @builder.add_from_file("./GUI.glade")
     get_all_widgets()
     @col_selected=0
     #initialize_postconditions()
-    
+
     @ip_address.text = "Ray-PC"
     @port.text = "50500"
   end
@@ -47,14 +45,19 @@ class MainView
   end
 
   # Shows the board and assigns it the passed in string value as a title
-  def show_board(string)
-    show_board_preconditions(string)
-    @board.title = string
+  def show_board()
+    #show_board_preconditions(string)
+    @board.hide_on_delete()
     @board.show()
     show_board_postconditions
   end
 
-  def show_error_dialog()
+  def hide_board()
+    @board.hide()
+  end
+
+  def show_error_dialog(exception)
+    @error_dialog_exception.text = exception
     @error_dialog.show()
   end
 
@@ -62,9 +65,18 @@ class MainView
     @statistics_dialog.hide_on_delete()
     @statistics_dialog.show()
   end
-  
+
   def hide_statistics_dialog()
     @statistics_dialog.hide()
+  end
+
+  def show_help()
+    @help.hide_on_delete()
+    @help.show()
+  end
+  
+  def hide_help()
+    @help.hide()
   end
 
   #+++++++++++++++++++++Helper functions, not signal handlers!++++++++++++++++++++
@@ -107,8 +119,12 @@ class MainView
     show_string = winner.to_s + " wins!"
     @win_dialog_label.text = show_string
     @win_dialog.show
-    #@controller.clean_up()
+    @win_dialog.hide_on_delete()
     show_win_postconditions()
+  end
+
+  def hide_win_dialog()
+    @win_dialog.hide()
   end
 
   # Shows a dialog indicating that it is a tie
@@ -175,6 +191,57 @@ class MainView
     end
   end
 
+  def get_game_name
+    if @game_name.text == ""
+      return "Game " + Time.now.to_s
+    else
+      return @game_name.text
+    end
+  end
+
+  def get_difficulty
+    difficulty = 0
+    if @easy.active?
+      difficulty = 0.80
+    elsif @medium.active?
+      difficulty = 0.40
+    end
+    return difficulty
+  end
+
+  def get_mode
+    if @view.otto_radiobutton.active?
+      game_type = "otto"
+    else
+      game_type = "connect4"
+    end
+    return game_type
+  end
+
+  def get_selected_game
+    selected = @games_list.selection.selected
+    if selected != nil
+      return selected.get_value(1)
+    end
+  end
+
+  def get_ip
+    return @ip_address.text
+  end
+
+  def get_port
+    return @port.text.to_i
+  end
+
+  def set_game_list(games)
+    @games_list.model.clear
+    games.each { |id, name|
+      row = @games_list.model.insert(0)
+      row.set_value(0, name)
+      row.set_value(1, id)
+    }
+  end
+
   private
 
   # Gets all widgets into useful class variables
@@ -188,11 +255,11 @@ class MainView
     @player_name=@builder.get_object("entry1")
     @ip_address=@builder.get_object("entry2")
     @error_dialog=@builder.get_object("errordialog")
+    @error_dialog_exception=@builder.get_object("errordialog_exception")
     @board=@builder.get_object("board")
     @win_dialog=@builder.get_object("win_dialog")
     @win_dialog_label=@builder.get_object("winner_label")
     @eventbox=@builder.get_object("eventbox1")
-    @connect4_radiobutton=@builder.get_object("radiobutton1")
     @otto_radiobutton=@builder.get_object("radiobutton2")
     @humans=@builder.get_object("spinbutton1")
     @computers=@builder.get_object("spinbutton2")

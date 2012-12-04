@@ -6,7 +6,7 @@ require_relative "./contracts/game_type_contracts"
 # Author:: Dustin Durand (dddurand@ualberta.ca)
 # Author:: Kenneth Rodas (krodas@ualberta.ca)
 # Author:: Raymond Wainman (wainman@uablerta.ca)
-# (ECE 421 - Assignment #4)
+# (ECE 421 - Assignment #5)
 
 class GameType
   include GameTypeContracts

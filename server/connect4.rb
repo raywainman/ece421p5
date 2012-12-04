@@ -10,7 +10,7 @@ require_relative "./contracts/connect4_contracts"
 # Author:: Dustin Durand (dddurand@ualberta.ca)
 # Author:: Kenneth Rodas (krodas@ualberta.ca)
 # Author:: Raymond Wainman (wainman@uablerta.ca)
-# (ECE 421 - Assignment #4)
+# (ECE 421 - Assignment #5)
 
 class Connect4 < GameType
   include Singleton

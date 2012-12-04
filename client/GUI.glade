@@ -14,7 +14,6 @@
 Kenneth Rodas
 Raymond Wainman</property>
     <signal name="response" handler="on_help_close"/>
-    <signal name="delete_event" handler="on_delete_help"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
@@ -83,13 +82,12 @@ are "O" or "TOOT" if you are "T".</property>
     <property name="window_position">center-always</property>
     <property name="destroy_with_parent">True</property>
     <property name="transient_for">mainMenu</property>
-    <signal name="delete_event" handler="on_board_delete_event"/>
     <child>
       <object class="GtkEventBox" id="eventbox1">
         <property name="visible">True</property>
         <property name="above_child">True</property>
-        <signal name="motion_notify_event" handler="on_eventbox1_motion_notify_event"/>
-        <signal name="button_release_event" handler="on_eventbox1_button_release_event"/>
+        <signal name="motion_notify_event" handler="on_column_hover"/>
+        <signal name="button_release_event" handler="on_column_clicked"/>
         <child>
           <object class="GtkVBox" id="vbox7">
             <property name="visible">True</property>
@@ -885,16 +883,19 @@ are "O" or "TOOT" if you are "T".</property>
             <property name="position">2</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkLabel" id="errdialog_exception">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">EXCEPTION MESSAGE</property>
+          </object>
+          <packing>
+            <property name="position">3</property>
+          </packing>
+        </child>
         <child internal-child="action_area">
           <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -1123,7 +1124,7 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="adjustment">adjustment2</property>
                 <property name="snap_to_ticks">True</property>
                 <property name="numeric">True</property>
-                <signal name="value_changed" handler="on_humans_changed"/>
+                <signal name="value_changed" handler="on_players_changed"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -1147,7 +1148,7 @@ are "O" or "TOOT" if you are "T".</property>
                     <property name="adjustment">adjustment3</property>
                     <property name="snap_to_ticks">True</property>
                     <property name="numeric">True</property>
-                    <signal name="value_changed" handler="on_computers_changed"/>
+                    <signal name="value_changed" handler="on_players_changed"/>
                   </object>
                   <packing>
                     <property name="position">0</property>
@@ -1619,7 +1620,7 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_statistics_close_clicked"/>
+                <signal name="clicked" handler="on_statistics_close"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1648,7 +1649,6 @@ are "O" or "TOOT" if you are "T".</property>
     <property name="skip_taskbar_hint">True</property>
     <property name="transient_for">board</property>
     <property name="message_type">other</property>
-    <signal name="delete_event" handler="on_win_dialog_delete_event"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
@@ -1673,7 +1673,7 @@ are "O" or "TOOT" if you are "T".</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_return_to_main_button_clicked"/>
+                <signal name="clicked" handler="on_win_close"/>
               </object>
               <packing>
                 <property name="expand">False</property>

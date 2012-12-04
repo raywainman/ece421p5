@@ -4,7 +4,7 @@ require "xmlrpc/client"
 require_relative "./connect4"
 require_relative "./game"
 require_relative "./otto"
-require_relative "../server_database"
+require_relative "./server_database"
 
 class ServerManager
   def initialize

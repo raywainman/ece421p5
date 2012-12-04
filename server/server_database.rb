@@ -1,6 +1,6 @@
 require "mysql"
 
-require_relative "../database_config"
+require_relative "../../database_config"
 require_relative "./contracts/server_database_contract"
 
 class ServerDatabase
