@@ -190,7 +190,7 @@ class MainController
   def on_column_clicked
     begin
       get_rpc.make_move(@id, @view.get_player_name, @view.col_selected)
-      @view.update(Marshal.load(get_rpc.get_update(@id)))
+      @view.update(Marshal.load(get_rpc.update(@id)))
     rescue Exception => e
       puts e.message
       puts e.backtrace
