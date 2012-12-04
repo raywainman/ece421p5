@@ -16,7 +16,7 @@ class Grid
   
   # Creates a new empty grid
   def initialize()
-    @grid = Array.new(6) { Array.new(7) }
+    @grid = Array.new(6) { Array.new(7) { "" } }
   end
 
   # Returns the number of rows in the grid
