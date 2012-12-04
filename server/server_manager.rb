@@ -104,12 +104,19 @@ class ServerManager
       @locks[id].synchronize {
         puts player
         puts column.to_s
+
+        if(@games[id].winner != -1)
+          return false
+        end
+
         result = @games[id].make_move(player, column)
+
         db = ServerDatabase.getInstance()
         db.update_game(id, Marshal.dump(@games[id]))
         db.close_connection()
         grid, active_player = @games[id].get_state()
         @players[id].each { |player_rpc|
+
           get_rpc(player_rpc).update(Marshal.dump(grid), active_player)
         }
         if @games[id].winner != -1
