@@ -57,10 +57,11 @@ class Client
   # Updates the grid with the given grid values and sets the appropriate active
   # player in the list of players.
   def update(grid, active_player)
+    grid = Marshal.load(grid)
     pre_update(grid, active_player)
     puts "Received update from server"
     begin
-      @view.update(Marshal.load(grid), active_player)
+      @view.update(grid, active_player)
       return true
     rescue Exception => e
       puts e

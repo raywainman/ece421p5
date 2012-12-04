@@ -61,6 +61,7 @@ class MainController
       end
     rescue Exception => e
       puts e.message
+      puts e.backtrace
       @view.show_error_dialog(e)
     end
   end
@@ -79,6 +80,7 @@ class MainController
       end
     rescue Exception => e
       puts e.message
+      puts e.backtrace
       @view.show_error_dialog(e)
     end
   end
@@ -102,6 +104,7 @@ class MainController
       start_win_timer()
     rescue Exception => e
       puts e.message
+      puts e.backtrace
       @view.show_error_dialog(e)
     end
     return true
@@ -127,6 +130,7 @@ class MainController
       start_win_timer()
     rescue Exception => e
       puts e.message
+      puts e.backtrace
       @view.show_error_dialog(e)
     end
   end
@@ -138,6 +142,7 @@ class MainController
       @view.set_game_list(games)
     rescue Exception => e
       puts e.message
+      puts e.backtrace
       @view.show_error_dialog(e.message)
     end
   end
@@ -159,6 +164,7 @@ class MainController
       @view.show_statistics_dialog
     rescue Exception => e
       puts e.message
+      puts e.backtrace
       @view.show_error_dialog(e)
     end
   end
@@ -184,9 +190,10 @@ class MainController
   def on_column_clicked
     begin
       get_rpc.make_move(@id, @view.get_player_name, @view.col_selected)
-      @view.update(Marshal.load(@server.get_update(@id)))
+      @view.update(Marshal.load(get_rpc.get_update(@id)))
     rescue Exception => e
       puts e.message
+      puts e.backtrace
       @view.show_error_dialog(e)
     end
   end
@@ -200,6 +207,7 @@ class MainController
       @view.show_arrow()
     rescue Exception => e
       puts e.message
+      puts e.backtrace
       @view.show_error_dialog(e)
     end
   end
