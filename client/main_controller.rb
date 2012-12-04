@@ -213,6 +213,11 @@ class MainController
     end
   end
 
+  # Board closed
+  def on_board_close
+    @view.hide_board()
+  end
+  
   # WIN DIALOG SIGNALS
 
   # Return to main menu button clicked within the win dialog
