@@ -148,9 +148,7 @@ class Game
     end
     token_count = {}
     @players.each{ |player|
-      if player.is_a?(HumanPlayer)
-        token_count[player.name] = @grid.count_tokens(player.token)
-      end
+      token_count[player.name] = @grid.count_tokens(player.token)
     }
     stats["PLAYERS"] = token_count
     return stats
