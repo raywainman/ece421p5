@@ -123,9 +123,9 @@ class MainController
       end
       players = get_rpc.get_players(@id)
       @view.initialize_players(players)
+      @view.reset_board_images()
       grid, active_player = get_rpc.update(@id)
       @view.update(Marshal.load(grid), active_player)
-      @view.reset_board_images()
       @view.show_board()
       start_win_timer()
     rescue Exception => e
