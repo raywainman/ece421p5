@@ -26,7 +26,7 @@ class MainView
     @col_selected=0
     #initialize_postconditions()
 
-    @ip_address.text = "Ray-PC"
+    @ip_address.text = Socket.gethostname
     @port.text = "50500"
   end
 
@@ -57,7 +57,7 @@ class MainView
   end
 
   def show_error_dialog(exception)
-    @error_dialog_exception.text = exception
+    @error_dialog_exception.text = exception.to_s
     @error_dialog.show()
   end
 
@@ -210,7 +210,7 @@ class MainView
   end
 
   def get_mode
-    if @view.otto_radiobutton.active?
+    if @otto_radiobutton.active?
       game_type = "otto"
     else
       game_type = "connect4"
@@ -255,7 +255,7 @@ class MainView
     @player_name=@builder.get_object("entry1")
     @ip_address=@builder.get_object("entry2")
     @error_dialog=@builder.get_object("errordialog")
-    @error_dialog_exception=@builder.get_object("errordialog_exception")
+    @error_dialog_exception=@builder.get_object("errdialog_exception")
     @board=@builder.get_object("board")
     @win_dialog=@builder.get_object("win_dialog")
     @win_dialog_label=@builder.get_object("winner_label")

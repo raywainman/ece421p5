@@ -1,4 +1,4 @@
-require_relative "../server_database"
+require_relative "../server/server_database"
 
 db = ServerDatabase.getInstance()
 db2 = ServerDatabase.getInstance()

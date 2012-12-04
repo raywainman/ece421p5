@@ -37,6 +37,7 @@ class ServerManager
       puts game.to_s
       db = ServerDatabase.getInstance()
       id = db.create_game_id(game_name, human_players, Marshal.dump(game))
+      db.close_connection()
       @games[id] = game
       @locks[id] = Mutex.new
       puts "Created game " + id.to_s
@@ -56,7 +57,9 @@ class ServerManager
     begin
       if !@locks.has_key?(id)
         @locks[id] = Mutex.new
-        @games[id] = Marshal.load(ServerDatabase.getInstance().retrieve_incomplete_game_data(id))
+        db = ServerDatabase.getInstance()
+        @games[id] = Marshal.load(db.retrieve_incomplete_game_data(id))
+        db.close_connection()
         @players[id] = []
       end
       @locks[id].synchronize {
@@ -66,6 +69,7 @@ class ServerManager
             new_players = @games[id].get_player_names()
             db = ServerDatabase.getInstance()
             db.add_restorable_player_to_game(id, player_name)
+            db.close_connection()
             client = {"ip" => hostname, "port"=>host_port}
             @players[id] << client
             grid, active_player = @games[id].get_state()
@@ -97,12 +101,13 @@ class ServerManager
 
   def make_move(id, player, column)
     begin
-      db = ServerDatabase.getInstance()
       @locks[id].synchronize {
         puts player
         puts column.to_s
         result = @games[id].make_move(player, column)
+        db = ServerDatabase.getInstance()
         db.update_game(id, Marshal.dump(@games[id]))
+        db.close_connection()
         grid, active_player = @games[id].get_state()
         @players[id].each { |player_rpc|
           get_rpc(player_rpc).update(Marshal.dump(grid), active_player)
@@ -124,6 +129,7 @@ class ServerManager
           stats["GAME_ID"] = id
           puts stats.inspect
           db.save_statistics(stats)
+          db.close_connection()
         end
 
         return result
@@ -160,7 +166,9 @@ class ServerManager
           games[id] = game.game_name
         end
       }
-      incomp = ServerDatabase.getInstance().retrieve_incomplete_games_for_player(player_name)
+      db = ServerDatabase.getInstance()
+      incomp = db.retrieve_incomplete_games_for_player(player_name)
+      db.close_connection()
       incomp.each { |incom_game|
         games[incom_game[0]] = incom_game[1]
       }
@@ -172,6 +180,9 @@ class ServerManager
   end
 
   def get_leaderboard()
+    db = ServerDatabase.getInstance()
+    result = Marshal.dump(db.get_leader_board())
+    db.close_connection()
     return Marshal.dump(ServerDatabase.getInstance().get_leader_board())
   end
 

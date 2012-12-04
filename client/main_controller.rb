@@ -44,7 +44,7 @@ class MainController
   def on_players_changed
     begin
       sum = @view.humans.text.to_i + @view.computers.text.to_i
-      if @view.otto_radiobutton.active?
+      if @view.get_mode == "otto"
         if sum > 2
           @view.humans.text = 2.to_s
           @view.computers.text = 0.to_s
@@ -61,14 +61,14 @@ class MainController
       end
     rescue Exception => e
       puts e.message
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
   end
 
   # Radio button (for game mode) changed
   def on_mode_changed
     begin
-      if @view.otto_radiobutton.active?
+      if @view.get_mode == "otto"
         if @view.humans.text.to_i >= 2
           @view.humans.text = 2.to_s
           @view.computers.text = 0.to_s
@@ -79,7 +79,7 @@ class MainController
       end
     rescue Exception => e
       puts e.message
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
   end
 
@@ -102,7 +102,7 @@ class MainController
       start_win_timer()
     rescue Exception => e
       puts e.message
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
     return true
   end
@@ -127,7 +127,7 @@ class MainController
       start_win_timer()
     rescue Exception => e
       puts e.message
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
   end
 
@@ -138,7 +138,7 @@ class MainController
       @view.set_game_list(games)
     rescue Exception => e
       puts e.message
-      @view.show_error_dialog
+      @view.show_error_dialog(e.message)
     end
   end
 
@@ -159,7 +159,7 @@ class MainController
       @view.show_statistics_dialog
     rescue Exception => e
       puts e.message
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
   end
 
@@ -187,7 +187,7 @@ class MainController
       @view.update(Marshal.load(@server.get_update(@id)))
     rescue Exception => e
       puts e.message
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
   end
 
@@ -200,7 +200,7 @@ class MainController
       @view.show_arrow()
     rescue Exception => e
       puts e.message
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
   end
 

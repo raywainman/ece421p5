@@ -645,6 +645,11 @@ def sort_leader_board(result)
     if(sort_val == 0)
       sort_val = y["DRAWS"] <=> x["DRAWS"]
     end
+    
+    #No games -> push to bottom!
+    if(x["WINS"] == 0 && x["LOSES"]==0 && x["DRAWS"]==0)
+      sort_val = 1
+    end
 
     sort_val
 }
