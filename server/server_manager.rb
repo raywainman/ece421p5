@@ -110,6 +110,7 @@ class ServerManager
         db.close_connection()
         grid, active_player = @games[id].get_state()
         @players[id].each { |player_rpc|
+          
           get_rpc(player_rpc).update(Marshal.dump(grid), active_player)
         }
         if @games[id].winner != -1

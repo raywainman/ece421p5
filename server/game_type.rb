@@ -76,7 +76,7 @@ class GameType
         col.upto(col+expected_length-1) {|i|
           temp = grid[rowindex,i]
 
-          if(temp == nil)
+          if(temp == nil || temp == "")
             string += null_token
           else
             string += temp.to_s
@@ -103,7 +103,7 @@ class GameType
         string = ""
         (row..row+expected_length-1).each {|i|
           temp = grid[i,col]
-          if(temp == nil)
+          if(temp == nil || temp == "")
             string += null_token
           else
             string += temp.to_s
@@ -136,7 +136,7 @@ class GameType
         while(row_index < row_length && column_index >= 0 && string.length <  expected_length)
           temp = grid[row_index,column_index]
 
-          if(temp == nil)
+          if(temp == nil || temp == "")
             string += null_token
           else
             string += temp.to_s
@@ -173,7 +173,7 @@ class GameType
         string = ""
         while(row_index < row_length && column_index < col_length && string.length < expected_length)
           temp = grid[row_index,column_index]
-          if(temp == nil)
+          if(temp == nil || temp == "")
             string += null_token
           else
             string += temp.to_s

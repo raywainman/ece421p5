@@ -225,7 +225,7 @@ class AIPlayer < Player
     pre_append_unless_nil(result_string, grid, checkrow, checkcol)
     temp = grid[checkrow,checkcol]
 
-    if(temp == nil)
+    if(temp == nil || temp == "")
       result_string << @NULL_SENTINEL
       result = false
     else
@@ -241,7 +241,7 @@ class AIPlayer < Player
     pre_prepend_unless_nil(result_string, grid, checkrow, checkcol)
     temp = grid[checkrow,checkcol]
 
-    if(temp == nil)
+    if(temp == nil || temp == "")
       result_string.insert(0, @NULL_SENTINEL)
       result = false
     else
@@ -448,7 +448,7 @@ class AIPlayer < Player
 
     col_length.times { |column|
       row_length.times { |row|
-        if grid[row,column] != nil
+        if (grid[row,column] != nil && grid[row,column] != "")
           row_indicator[column] = row
 
           if(row == 0)

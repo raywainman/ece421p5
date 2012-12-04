@@ -106,7 +106,7 @@ class Grid
     #class_invariant()
     @grid.each_with_index{ |row_e, row_i|
       row_e.each_index{ |col_i|
-        @grid[row_i][col_i] = nil
+        @grid[row_i][col_i] = ""
       }
     }
     #class_invariant()
@@ -118,7 +118,7 @@ class Grid
     #make_move_preconditions(token, column)
     #class_invariant()
     (0..6).each{ |row|
-      if @grid[6-row-1][column] == nil
+      if @grid[6-row-1][column] == ""
         @grid[6-row-1][column] = token
         break;
       end
@@ -131,7 +131,7 @@ class Grid
   def is_column_full?(column)
     #is_column_full_preconditions(column)
     #class_invariant()
-    result = @grid[0][column] != nil
+    result = @grid[0][column] != ""
     #class_invariant()
     #is_column_full_postconditions
     return result
@@ -143,7 +143,7 @@ class Grid
     #class_invariant()
     result = true
     self.each { |e|
-      if e == nil
+      if e == ""
         result = false
         break
       end
@@ -167,7 +167,7 @@ class Grid
     str = ""
     @grid.each { |row|
       row.each { |element|
-        if element == nil
+        if element == ""
           element = "-"
         end
         str << element + " "

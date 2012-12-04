@@ -84,7 +84,7 @@ module GridContracts
   def reset_postconditions()
     @grid.each{ |row|
       row.each{ |column|
-        assert column == nil, "grid element must be nil to start"
+        assert column == "", "grid element must be empty string to start"
       }
     }
   end
@@ -93,7 +93,7 @@ module GridContracts
     assert token != nil, "token must not be nil"
     assert column >= 0, "column must be within range"
     assert column < 7, "column must be within range"
-    assert @grid[0][column] == nil, "column is full"
+    assert @grid[0][column] == "", "column is full"
   end
 
   def make_move_postconditions(token, column)
@@ -133,7 +133,7 @@ module GridContracts
     count.default = 0
     @grid.each{ |row|
       row.each{ |element|
-        if element != nil
+        if element != ""
           count[element] = count[element] + 1
         end
       }
