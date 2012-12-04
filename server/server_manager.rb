@@ -54,24 +54,25 @@ class ServerManager
 
   def join_game(id, player_name, hostname, host_port)
     begin
+      if !@locks.has_key?(id)
+        @locks[id] = Mutex.new
+        @games[id] = Marshal.load(ServerDatabase.getInstance().retrieve_incomplete_game_data(id))
+        @players[id] = []
+      end
       @locks[id].synchronize {
         @games[id].players.each { |player|
-          if player.name == player_name
-            puts "Username is already in the game"
-            return false
-          end
-        }
-        @games[id].players.each { |player|
-          if player.name == ""
+          if player.name == "" || player.name == player_name
             player.set_name(player_name)
             new_players = @games[id].get_player_names()
-            @players[id].each { |other_player|
-              get_rpc(other_player).initialize_players(new_players)
-            }
             db = ServerDatabase.getInstance()
             db.add_restorable_player_to_game(id, player_name)
             client = {"ip" => hostname, "port"=>host_port}
             @players[id] << client
+            grid, active_player = @games[id].get_state()
+            @players[id].each { |other_player|
+              get_rpc(other_player).initialize_players(new_players)
+              get_rpc(other_player).update(Marshal.dump(grid), active_player)
+            }
             return true
           end
         }
@@ -145,7 +146,7 @@ class ServerManager
     end
   end
 
-  def get_open_games()
+  def get_open_games(player_name)
     begin
       games = {}
       @games.each { |id, game|
@@ -159,12 +160,22 @@ class ServerManager
           games[id] = game.game_name
         end
       }
+      incomp = ServerDatabase.getInstance().retrieve_incomplete_games_for_player(player_name)
+      incomp.each { |incom_game|
+        games[incom_game[0]] = incom_game[1]
+      }
       return Marshal.dump(games)
     rescue Exception => e
       puts e
       puts e.backtrace
     end
   end
+
+  def get_leaderboard()
+    return Marshal.dump(ServerDatabase.getInstance().get_leader_board())
+  end
+
+  private
 
   def get_rpc(player)
     client_object = XMLRPC::Client.new(player["ip"], "/", player["port"])

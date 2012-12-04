@@ -267,7 +267,7 @@ class ServerDatabase
   #
   #Returns data of provided game_id(must be incomplete)
   def retrieve_incomplete_game_data(gameID)
-    pre_retrieve_incomplete_game_data(id)
+    pre_retrieve_incomplete_game_data(gameID)
 
     sql = "SELECT data "
     sql += "FROM game "
@@ -275,7 +275,7 @@ class ServerDatabase
 
     result = get_single_row_field(sql, nil, gameID)
 
-    post_retrieve_incomplete_game_data(data)
+    post_retrieve_incomplete_game_data(result)
     result
   end
 

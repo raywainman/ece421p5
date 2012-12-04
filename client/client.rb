@@ -11,7 +11,11 @@ class Client
     Thread.new {
       @view.show
     }
-    @server = XMLRPC::Server.new(port, ENV["HOSTNAME"], 100)
+    ip_address = ENV["HOSTNAME"]
+    if ip_address == nil
+      ip_address = Socket.gethostname
+    end
+    @server = XMLRPC::Server.new(port, ip_address, 100)
   end
 
   def start
@@ -59,5 +63,7 @@ class Client
   end
 end
 
-client = Client.new(ARGV[0].to_i)
+port = ARGV[0]
+ARGV.delete_at(0)
+client = Client.new(port.to_i)
 client.start()

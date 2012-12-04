@@ -16,7 +16,8 @@ class MainView
 
   # Expose form widgets and other important components
   attr_reader :humans, :computers, :connect4_radiobutton, :otto_radiobutton, :easy, :medium,
-  :col_selected, :win_dialog, :board, :help, :ip_address, :games_list, :game_name, :port
+  :col_selected, :win_dialog, :board, :help, :ip_address, :games_list, :game_name, :port,
+  :statistics_table
   # Initializes GUI via .glade file and gets all the widgets
   def initialize()
     #initialize_preconditions()
@@ -26,6 +27,9 @@ class MainView
     get_all_widgets()
     @col_selected=0
     #initialize_postconditions()
+    
+    @ip_address.text = "Ray-PC"
+    @port.text = "50500"
   end
 
   # Sets the controller for this view and attaches all signal handlers
@@ -176,7 +180,8 @@ class MainView
   # Gets all widgets into useful class variables
   def get_all_widgets
     #Get all miscellaneous widgets
-    @statistics_dialog.get_object("stat_dialog")
+    @statistics_dialog=@builder.get_object("stat_dialog")
+    @statistics_table=@builder.get_object("treeview2")
     @port=@builder.get_object("entry9")
     @game_name=@builder.get_object("entry34")
     @games_list=@builder.get_object("treeview1")

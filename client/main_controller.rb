@@ -99,11 +99,16 @@ class MainController
     computers = @view.computers.text.to_i
 
     ip_address = ENV["HOSTNAME"]
+    if ip_address == nil
+      ip_address = Socket.gethostname
+    end
     @player_name = @view.get_player_name
     game_name = @view.game_name.text
     if game_name == ""
       game_name = "Game " + Time.now.to_s
     end
+    puts ip_address
+    puts game_name
     @id = get_rpc.create_game(game_name, humans, computers, difficulty, @player_name, game_type, ip_address, @local_port)
 
     players = get_rpc.get_players(@id)
@@ -123,6 +128,9 @@ class MainController
   def on_join_clicked
     @id = @view.games_list.selection.selected.get_value(1)
     ip_address = ENV["HOSTNAME"]
+    if ip_address == nil
+      ip_address = Socket.gethostname
+    end
     @player_name = @view.get_player_name
     result = get_rpc.join_game(@id, @player_name, ip_address, @local_port)
     if !result
@@ -140,7 +148,7 @@ class MainController
   end
 
   def on_refresh_clicked
-    games = Marshal.load(get_rpc.get_open_games())
+    games = Marshal.load(get_rpc.get_open_games(@view.get_player_name))
     @view.games_list.model.clear
     games.each { |id, name|
       row = @view.games_list.model.insert(0)
@@ -150,13 +158,24 @@ class MainController
   end
 
   def on_statistics_clicked
+    @view.statistics_table.model.clear()
+    leaderboard = Marshal.load(get_rpc.get_leaderboard())
+    leaderboard.each { |player|
+      row = @view.statistics_table.model.insert(leaderboard.size)
+      row.set_value(0, player["NAME"])
+      row.set_value(1, player["WINS"])
+      row.set_value(2, player["LOSES"])
+      row.set_value(3, player["DRAWS"])
+      row.set_value(4, player["AVG_TOKENS"])
+      row.set_value(5, player["AVG_TOKENS_WINS"])
+    }
     @view.show_statistics_dialog
   end
-  
+
   def on_statistics_close_clicked
     @view.hide_statistics_dialog
   end
-  
+
   def start_win_timer
     @win_thread = Gtk.timeout_add(1000) {
       if @winner != -1 && @winner != 0
