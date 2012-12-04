@@ -889,6 +889,9 @@ are "O" or "TOOT" if you are "T".</property>
                 <child>
                   <placeholder/>
                 </child>
+                <child>
+                  <placeholder/>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -1901,6 +1904,7 @@ are "O" or "TOOT" if you are "T".</property>
     <property name="transient_for">board</property>
     <property name="message_type">other</property>
     <signal name="close" handler="on_win_close" swapped="no"/>
+    <signal name="delete-event" handler="on_win_close" swapped="no"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
