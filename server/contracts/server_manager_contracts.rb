@@ -170,9 +170,10 @@ module ServerManagerContracts
     }
     @players.each_pair { |key, value|
       assert key.is_a?(Fixnum), "id should be a number"
-      value.each_pair { |player_key, player_value|
-        assert player_key == "ip" || player_key == "port", "player id should be an IP or port"
-        assert player_value.is_a?(String) || player_value.is_a?(Fixnum), "player value should be a valid port or IP"
+      value.each { |player|
+        assert player.has_key?("ip") || player.has_key?("port"), "player id should be an IP or port"
+        assert player["ip"].is_a?(String), "player value should be a valid ip"
+        assert player["port"].is_a?(Fixnum), "player value should be a valid port"
       }
     }
   end
