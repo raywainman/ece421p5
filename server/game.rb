@@ -135,6 +135,25 @@ class Game
     make_move_postconditions()
     return true
   end
+  
+  def is_single_player?()
+    pre_is_single_player?()
+    
+    human = 0
+    @players.each(){ |player|
+      human+=1 unless player.is_a?(AIPlayer)
+    }
+    
+    if(human <=1)
+      result = true
+    else
+      result = false
+    
+      post_is_single_player?(result)
+      result  
+  end
+    
+  end
 
   def get_player_names()
     class_invariant()
