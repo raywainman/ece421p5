@@ -94,7 +94,6 @@ are "O" or "TOOT" if you are "T".</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="adjustment3">
-    <property name="lower">1</property>
     <property name="upper">3</property>
     <property name="value">1</property>
     <property name="step_increment">1</property>
@@ -864,6 +863,9 @@ are "O" or "TOOT" if you are "T".</property>
                     <property name="left_attach">7</property>
                     <property name="right_attach">8</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
