@@ -53,6 +53,7 @@ class MainView
     @board.show()
     @start_btn.sensitive = false
     @join_btn.sensitive  = false
+    @controller.on_refresh_clicked()
     class_invariant()
   end
 
@@ -62,6 +63,7 @@ class MainView
     @board.hide()
     @start_btn.sensitive = true
     @join_btn.sensitive = true
+    @controller.on_refresh_clicked()
     class_invariant()
   end
 
