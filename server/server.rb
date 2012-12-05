@@ -2,6 +2,14 @@ require "xmlrpc/server"
 
 require_relative "./server_manager"
 
+# Main server object. Simply boots up an XMLRPC server and binds the
+# ServerManager object.
+
+# Author:: Dustin Durand (dddurand@ualberta.ca)
+# Author:: Kenneth Rodas (krodas@ualberta.ca)
+# Author:: Raymond Wainman (wainman@uablerta.ca)
+# (ECE 421 - Assignment #5)
+
 class Server
   def initialize(port = 50500)
     ip_address = ENV["HOSTNAME"]

@@ -3,6 +3,14 @@ require "mysql"
 require_relative "../../database_config"
 require_relative "./contracts/server_database_contract"
 
+# Database object class. Provides all interaction functionality with the
+# MySQL database.
+
+# Author:: Dustin Durand (dddurand@ualberta.ca)
+# Author:: Kenneth Rodas (krodas@ualberta.ca)
+# Author:: Raymond Wainman (wainman@uablerta.ca)
+# (ECE 421 - Assignment #5)
+
 class ServerDatabase
   include ServerDatabaseContract
 
