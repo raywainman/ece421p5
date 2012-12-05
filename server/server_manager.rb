@@ -5,15 +5,22 @@ require_relative "./connect4"
 require_relative "./game"
 require_relative "./otto"
 require_relative "./server_database"
+require_relative "./contracts/server_manager_contracts"
 
 class ServerManager
+  include ServerManagerContracts
   def initialize
+    pre_initialize
     @games = {}
     @players = {}
     @locks = {}
+    post_initialize
   end
 
   def create_game(game_name, humans, ais, ai_difficulty, player, game_type, hostname, host_port)
+    pre_create_game(game_name, humans, ais, ai_difficulty, player, game_type, hostname, host_port)
+
+    id = -1
     begin
       # Game Type
       if game_type == "connect4"
@@ -46,14 +53,18 @@ class ServerManager
       client = {"ip" => hostname, "port"=>host_port}
       @players[id] = []
       @players[id] << client
-      return id
     rescue Exception => e
       puts e
       puts e.backtrace
     end
+
+    post_create_game(id)
+    id
   end
 
   def join_game(id, player_name, hostname, host_port)
+    pre_join_game(id, player_name, hostname, host_port)
+    result = false
     begin
       if !@locks.has_key?(id)
         @locks[id] = Mutex.new
@@ -77,26 +88,33 @@ class ServerManager
               get_rpc(other_player).initialize_players(new_players)
               get_rpc(other_player).update(Marshal.dump(grid), active_player)
             }
-            return true
+            result = true
           end
         }
-        return false
+        result = false
       }
     rescue Exception => e
       puts e
       puts e.backtrace
     end
+
+    post_join_game(id, result)
+    result
   end
 
   def get_players(id)
+    pre_get_players(id)
+    result = {}
     begin
       @locks[id].synchronize {
-        return @games[id].get_player_names()
+        result = @games[id].get_player_names()
       }
     rescue Exception => e
       puts e
       puts e.backtrace
     end
+    post_get_players(result)
+    result
   end
 
   def make_move(id, player, column)
@@ -145,6 +163,8 @@ class ServerManager
       puts e
       puts e.backtrace
     end
+    
+
   end
 
   def update(id)

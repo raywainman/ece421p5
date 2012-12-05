@@ -45,7 +45,7 @@ module MainControllerContracts
     if win.is_a?(String)
       assert win.size > 0, "winner must not be empty"
     else
-      assert @winner == 0, "winner must be 0 if there is a tie"
+      assert win == 0, "winner must be 0 if there is a tie"
     end
     class_invariant()
   end
