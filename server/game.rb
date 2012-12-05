@@ -106,7 +106,7 @@ class Game
       puts "Invalid move"
       return false
     end
-    if @winning == -1 || @winning == -2
+    if @winner != -1
       puts "Game is over!"
       return false
     end
@@ -143,7 +143,8 @@ class Game
 
   def collect_statistics()
     stats = {}
-    if @winning != -1 && @winning != -2
+      
+    if @winner != -1 && winner != -2
       stats["WINNER"] = @winner_name
     end
     token_count = {}

@@ -189,6 +189,7 @@ class MainController
   # Mouse clicked on one of the columns
   def on_column_clicked
     begin
+      
       get_rpc.make_move(@id, @view.get_player_name, @view.col_selected)
       grid, active_player = get_rpc.update(@id)
       @view.update(Marshal.load(grid), active_player)
