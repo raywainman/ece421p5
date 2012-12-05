@@ -48,12 +48,17 @@ class MainView
   def show_board()
     #show_board_preconditions(string)
     @board.hide_on_delete()
-    @board.show()
+    @board.show() 
+    @start_btn.sensitive = false
+    @join_btn.sensitive  = false
+    
     show_board_postconditions
   end
 
   def hide_board()
     @board.hide()
+    @start_btn.sensitive = true
+    @join_btn.sensitive = true
   end
 
   def show_error_dialog(exception)
@@ -265,7 +270,12 @@ class MainView
     @computers=@builder.get_object("spinbutton2")
     @easy=@builder.get_object("radiobutton3")
     @medium=@builder.get_object("radiobutton4")
-    @help=@builder.get_object("aboutdialog1")
+    @help=@builder.get_object("aboutdialog1") 
+    @start_btn = @builder.get_object("start_button")
+    @join_btn = @builder.get_object("join_button")
+    
+    
+    
     #Get all arrows
     @arrows = []
     (1..7).each { |col|
