@@ -655,8 +655,12 @@ def sort_leader_board(result)
     end
     
     #No games -> push to bottom!
-    if(x["WINS"] == 0 && x["LOSES"]==0 && x["DRAWS"]==0)
+    if(x["WINS"].to_i == 0 && x["LOSES"].to_i==0 && x["DRAWS"].to_i==0)
       sort_val = 1
+    end
+    
+    if(y["WINS"].to_i == 0 && y["LOSES"].to_i==0 && y["DRAWS"].to_i==0)
+      sort_val = -1
     end
 
     sort_val

@@ -85,13 +85,13 @@ class ServerManager
             @players[id] << client
             grid, active_player = @games[id].get_state()
             @players[id].each { |other_player|
+              puts "initialize calls to clients"
               get_rpc(other_player).initialize_players(new_players)
               get_rpc(other_player).update(Marshal.dump(grid), active_player)
             }
             result = true
           end
         }
-        result = false
       }
     rescue Exception => e
       puts e
@@ -153,13 +153,14 @@ class ServerManager
           db = ServerDatabase.getInstance()
           db.set_game_complete(id)
           
-          # TODO: Only collect statistics for multiplayer games
-          puts @players
+          if(!@games[id].is_single_player?())
+            stats = @games[id].collect_statistics
+            stats["GAME_ID"] = id
+            puts stats.inspect
+            db.save_statistics(stats)
+          end
           
-          stats = @games[id].collect_statistics
-          stats["GAME_ID"] = id
-          puts stats.inspect
-          db.save_statistics(stats)
+          
           db.close_connection()
         end
 
