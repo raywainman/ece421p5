@@ -74,8 +74,15 @@ class ServerManager
         @players[id] = []
       end
       @locks[id].synchronize {
+        contains_player = false
         @games[id].players.each { |player|
-          if player.name == "" || player.name == player_name
+          if player.name == player_name
+            contains_player = true
+          end
+        }
+        
+        @games[id].players.each { |player|
+          if (player.name == "" && !contains_player) || player.name == player_name
             player.set_name(player_name)
             new_players = @games[id].get_player_names()
             db = ServerDatabase.getInstance()
