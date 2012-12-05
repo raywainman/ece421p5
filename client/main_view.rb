@@ -337,4 +337,13 @@ class MainView
     #Set event handler for eventbox
     @eventbox.set_events(Gdk::Event::POINTER_MOTION_MASK)
   end
+
+  def column_full?(column)
+    value = @imageArray[0][column].file
+    if value == "resources/piece_empty.png"
+      return false
+    else
+      return true
+    end
+  end
 end
