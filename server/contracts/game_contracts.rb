@@ -1,14 +1,17 @@
 require "test/unit"
 
+require_relative "../../contracts/common_contracts"
+
 # Contracts for Game object.
 
 # Author:: Dustin Durand (dddurand@ualberta.ca)
 # Author:: Kenneth Rodas (krodas@ualberta.ca)
 # Author:: Raymond Wainman (wainman@uablerta.ca)
-# (ECE 421 - Assignment #4)
+# (ECE 421 - Assignment #5)
 
 module GameContracts
   include Test::Unit::Assertions
+  include CommonContracts
   def initialize_preconditions(game_type, players, game_name)
     assert game_type.is_a?(GameType), "game_type argument must be a GameType object"
     assert players.respond_to?("[]"), "players argument must be a container of players"
@@ -27,6 +30,8 @@ module GameContracts
     assert @game_type != nil, "game_type class element cannot be nil"
     assert @active_player == 0, "active_player must be first player"
     assert @game_name != nil, "view must not be nil"
+    assert @winner == -1, "winner must be set to -1"
+    assert @winner_name == "", "winner_name must be set to empty string"
   end
 
   def reset_preconditions()
@@ -38,14 +43,17 @@ module GameContracts
       assert element == "", "grid element must be an empty string to start"
     }
     assert @active_player == 0, "active_player must be first player"
+    assert @winner == -1, "winner must be set to -1"
+    assert @winner_name == "", "winner_name must be set to empty string"
   end
 
   def get_state_preconditions()
     # No preconditions
   end
 
-  def get_state_postconditions(result)
-    assert result.is_a?(State), "state must be a State object"
+  def get_state_postconditions(grid, active_player)
+    check_grid_array(grid)
+    check_active_player(active_player)
   end
 
   def is_win_preconditions()
@@ -53,7 +61,7 @@ module GameContracts
   end
 
   def is_win_postconditions(result)
-    assert result == 20 || (result >= 0 && result < @players.size), "result must be a player value"
+    assert result == -1 || (result >= 0 && result < @players.size), "result must be a player value"
   end
 
   def show_win_preconditions(winner)
@@ -81,9 +89,18 @@ module GameContracts
     # No postconditions
   end
 
+  def post_get_player_names(players)
+    check_player_hash(players)
+  end
+
+  def post_collect_statistics(stats)
+    assert stats.respond_to?("keys"), "stats should respond to keys()"
+    assert stats.has_key?("PLAYERS"), "stats should at least contain PLAYERS"
+  end
+  
   def class_invariant()
     assert @grid.is_a?(Grid), "grid must be a Grid object"
-    #@grid.class_invariant()
+    @grid.class_invariant()
     assert @players != nil, "players class element cannot be nil"
     assert @game_type != nil, "game_type class element cannot be nil"
     assert @active_player >= 0, "active_player must be a positive integer"

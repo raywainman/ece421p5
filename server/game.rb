@@ -9,13 +9,12 @@ require_relative "./contracts/game_contracts"
 # Author:: Dustin Durand (dddurand@ualberta.ca)
 # Author:: Kenneth Rodas (krodas@ualberta.ca)
 # Author:: Raymond Wainman (wainman@uablerta.ca)
-# (ECE 421 - Assignment #4)
+# (ECE 421 - Assignment #5)
 
 class Game
   include GameContracts
-  
+
   attr_reader :players, :winner, :winner_name, :game_name
-  
   # Creates a new instance of the game given a GameType, a list of Player objects
   # and a View object to update
   def initialize(game_type, players, game_name)
@@ -47,25 +46,21 @@ class Game
     reset_postconditions()
   end
 
-  # Delegate method to check if the given column is full
-  def is_column_full?(column)
-    @grid.is_column_full?(column)
-  end
-
   # Constructs a State object from the current game state
   def get_state()
-    #get_state_preconditions()
+    get_state_preconditions()
     class_invariant()
-    #result = State.new(@grid.grid, @active_player, @winner)
+    grid = @grid.grid
+    active_player = @active_player
     class_invariant()
-    #get_state_postconditions(result)
-    return @grid.grid, @active_player
+    get_state_postconditions(grid, active_player)
+    return grid, active_player
   end
 
   # Determines if the current board state results in a win for the current
   # active player
   def is_win()
-    #is_win_preconditions()
+    is_win_preconditions()
     class_invariant()
     winner = -1
     (0...@players.size).each { |player_index|
@@ -76,13 +71,14 @@ class Game
       end
     }
     class_invariant()
-    #is_win_postconditions(winner)
+    is_win_postconditions(winner)
     return winner
   end
 
   # Checks to see if it is the end of the game (via a win or tie) and launches
   # the appropriate action.
   def is_end?
+    class_invariant()
     @winner = is_win()
     if @winner != -1
       @winner_name = @players[@winner].name
@@ -99,7 +95,6 @@ class Game
   # Plays a move for the current active player and will play any subsequent AI players
   # (if it is their turn)
   def make_move(player, column)
-    puts "player - " + player
     make_move_preconditions(player, column)
     class_invariant()
     if @active_player != get_player_index(player)
@@ -111,7 +106,7 @@ class Game
       return false
     end
 
-    puts "Player " + player + " made a move on column " + column.to_s
+    puts player + " made a move on column " + column.to_s
     @grid.make_move(@game_type.get_player_label(@active_player), column)
     if is_end?
       return true
@@ -134,16 +129,17 @@ class Game
   end
 
   def get_player_names()
+    class_invariant()
     players = {}
     @players.each { |player|
       players[player.token] = player.name
     }
+    post_get_player_names(players)
     return players
   end
 
   def collect_statistics()
     stats = {}
-      
     if @winner != -1 && winner != -2
       stats["WINNER"] = @winner_name
     end
@@ -152,9 +148,10 @@ class Game
       token_count[player.name] = @grid.count_tokens(player.token)
     }
     stats["PLAYERS"] = token_count
+    post_collect_statistics(stats)
     return stats
   end
-  
+
   def to_s()
     str = "Game: " + @game_name
     str << ", Players: " + @players.to_s

@@ -32,6 +32,15 @@ module CommonContracts
     assert range.include?(active_player), "active_player must be within player range"
   end
 
+  def check_player_hash(players)
+    assert players.respond_to?("keys"), "players must respond to keys"
+    players.each_pair { |key, value|
+      assert key.is_a?(String), "key should be a token value"
+      assert key.size == 1, "key should be a token value"
+      assert value.is_a?(String), "value should be a player name"
+    }
+  end
+
   def check_port(port)
     assert port.respond_to?("to_i"), "port must be representable as an integer"
     assert port.to_i >= 50500 && port.to_i <=50600, "port must be in 50500-50600 range"
