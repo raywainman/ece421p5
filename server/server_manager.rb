@@ -127,6 +127,7 @@ class ServerManager
   def make_move(id, player, column)
     pre_make_move(id, player, column)
     class_invariant()
+    result = nil
     begin
       @locks[id].synchronize {
         puts player
