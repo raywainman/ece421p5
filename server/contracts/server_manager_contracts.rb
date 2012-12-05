@@ -173,7 +173,7 @@ module ServerManagerContracts
       value.each { |player|
         assert player.has_key?("ip") || player.has_key?("port"), "player id should be an IP or port"
         assert player["ip"].is_a?(String), "player value should be a valid ip"
-        assert player["port"].is_a?(Fixnum), "player value should be a valid port"
+        assert player["port"].is_a?(String), "player value should be a valid port"
       }
     }
   end
