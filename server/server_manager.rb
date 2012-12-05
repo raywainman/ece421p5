@@ -80,7 +80,7 @@ class ServerManager
             contains_player = true
           end
         }
-        
+
         @games[id].players.each { |player|
           if (player.name == "" && !contains_player) || player.name == player_name
             player.set_name(player_name)
@@ -125,6 +125,8 @@ class ServerManager
   end
 
   def make_move(id, player, column)
+    pre_make_move(id, player, column)
+    class_invariant()
     begin
       @locks[id].synchronize {
         puts player
@@ -133,7 +135,7 @@ class ServerManager
         if(@games[id].winner != -1)
           return false
         end
-        
+
         if(@games[id].is_column_full?(column))
           return false
         end
@@ -159,41 +161,47 @@ class ServerManager
           end
           db = ServerDatabase.getInstance()
           db.set_game_complete(id)
-          
+
           if(!@games[id].is_single_player?())
             stats = @games[id].collect_statistics
             stats["GAME_ID"] = id
             puts stats.inspect
             db.save_statistics(stats)
           end
-          
-          
+
           db.close_connection()
         end
-
-        return result
       }
     rescue Exception => e
       puts e
       puts e.backtrace
     end
-    
-
+    class_invariant()
+    post_make_move(result)
+    return result
   end
 
   def update(id)
+    pre_update(id)
+    class_invariant()
+    result = nil
     begin
       @locks[id].synchronize {
         grid, active_player = @games[id].get_state
-        return Marshal.dump(grid), active_player
+        result = Marshal.dump(grid), active_player
       }
     rescue Exception => e
       puts e
       puts e.backtrace
     end
+    class_invariant()
+    post_update(result)
   end
 
   def get_open_games(player_name)
+    pre_get_open_games(player_name)
+    class_invariant()
+    result = nil
     begin
       games = {}
       @games.each { |id, game|
@@ -213,18 +221,26 @@ class ServerManager
       incomp.each { |incom_game|
         games[incom_game[0]] = incom_game[1]
       }
-      return Marshal.dump(games)
+      result = games
     rescue Exception => e
       puts e
       puts e.backtrace
     end
+    class_invariant()
+    post_get_open_games(result)
+    return Marshal.dump(result)
   end
 
   def get_leaderboard()
+    pre_get_leaderboard()
+    class_invariant()
     db = ServerDatabase.getInstance()
     result = Marshal.dump(db.get_leader_board())
     db.close_connection()
-    return Marshal.dump(ServerDatabase.getInstance().get_leader_board())
+    result = ServerDatabase.getInstance().get_leader_board()
+    class_invariant()
+    post_get_leaderboard(result)
+    return Marshal.dump(result)
   end
 
   private

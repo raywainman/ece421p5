@@ -75,60 +75,105 @@ module ServerManagerContracts
       assert(player.has_key?("port"))
     }
   end
-  
+
   def post_create_game(id)
     check_game_cache(id)
   end
-  
+
   def pre_join_game(id, player_name, hostname, host_port)
     assert(id != nil, "id of game cannot be nil")
     assert(id >= 0, "invalid game id provided")
     #check game complete?
-    
+
     check_name(player_name)
     check_ip(hostname)
     check_port(host_port)
   end
-  
+
   def post_join_game(id, result)
     if(result == true)
       check_game_cache(id)
     end
   end
-  
+
   def pre_get_players(id)
     assert(id != nil, "id of game cannot be nil")
     assert(id >= 0, "invalid game id provided")
     assert(@games[id] != nil, "invalid game id provided")
   end
-  
+
   def post_get_players(result)
     assert(result!=nil)
     check_player_hash(result)
   end
-  
+
   def pre_make_move(id, player, column)
-  end
-  
-  def post_make_move(result)
-  end
-  
-  def pre_update(id)
-  end
-  
-  def post_update(result)
-  end  
-  
-  def pre_get_open_games(player_name)
-  end
-  
-  def post_get_open_games(result)
-  end
-  
-  def pre_get_leaderboard()
-  end
-  
-  def post_get_leaderboard()
+    assert(id != nil, "id of game cannot be nil")
+    assert(id >= 0, "invalid game id provided")
+    assert column >= 0 && column < 7, "column must be in 0-6 range"
+    assert player.is_a?(String), "player must be a string"
+    assert player.size > 0, "player string must not be empty"
   end
 
+  def post_make_move(result)
+    assert result == true || result == false, "result must be a boolean value"
+  end
+
+  def pre_update(id)
+    assert(id != nil, "id of game cannot be nil")
+    assert(id >= 0, "invalid game id provided")
+  end
+
+  def post_update(result)
+    assert result == true || result == false, "result must be a boolean value"
+  end
+
+  def pre_get_open_games(player_name)
+    assert player.is_a?(String), "player must be a string"
+    assert player.size > 0, "player string must not be empty"
+  end
+
+  def post_get_open_games(result)
+    assert result.respond_to?("keys"), "game hash must respond to keys"
+    result.each_pair { |key, value|
+      assert key.is_a?(Fixnum), "id should be a number"
+      assert key >= 0, "invalid id"
+      assert value.is_a?(String), "game name should be a string"
+      assert value.size > 0, "game name should not be empty"
+    }
+  end
+
+  def pre_get_leaderboard()
+    # NONE
+  end
+
+  def post_get_leaderboard(result)
+    assert result.respond_to?("[]"), "leaderboard must be an array"
+    result.each { |row|
+      assert row.respond_to?("keys"), "leaderboard row must be a hash"
+      row.each_pair { |key, value|
+        assert key.is_a?(String), "key should be a string"
+        assert value.is_a?(Fixnum) || value.is_a?(String), "value should be a string"
+      }
+    }
+  end
+
+  def class_invariant()
+    assert @games.size == @locks.size, "should have same number of games as number of locks"
+    @games.each_pair { |key, value|
+      assert key.is_a?(Fixnum), "id should be a number"
+      assert value.is_a?(Game), "game should be a Game object"
+    }
+    @locks.each_pair { |key, value|
+      assert key.is_a?(Fixnum), "id should be a number"
+      assert value.is_a?(Mutex), "lock should be a Mutex object"
+    }
+    @players.each_pair { |key, value|
+      assert key.is_a?(Fixnum), "id should be a number"
+      value.each_pair { |player_key, player_value|
+        assert player_key == "ip" || player_key == "port", "player id should be an IP or port"
+        assert player_value.is_a?(String) || player_value.is_a?(Fixnum), "player value should be a valid port or IP"
+      }
+    }
+  end
 end
