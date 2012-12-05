@@ -113,7 +113,7 @@ class MainController
     rescue Exception => e
       puts e.message
       puts e.backtrace
-      @view.show_error_dialog(e)
+      @view.show_message_dialog("No connection to server")
     end
     class_invariant()
     return true
@@ -141,7 +141,7 @@ class MainController
     rescue Exception => e
       puts e.message
       puts e.backtrace
-      @view.show_error_dialog(e)
+      @view.show_message_dialog("No connection to server")
     end
     class_invariant()
   end
@@ -160,7 +160,7 @@ class MainController
     rescue Exception => e
       puts e.message
       puts e.backtrace
-      @view.show_error_dialog(e.message)
+      @view.show_message_dialog("No connection to server")
     end
     class_invariant()
   end
@@ -184,7 +184,7 @@ class MainController
     rescue Exception => e
       puts e.message
       puts e.backtrace
-      @view.show_error_dialog(e)
+      @view.show_message_dialog("No connection to server")
     end
     class_invariant()
   end
@@ -207,6 +207,12 @@ class MainController
   def on_help_close
     class_invariant()
     @view.hide_help()
+    class_invariant()
+  end
+
+  def on_message_close
+    class_invariant()
+    @view.hide_message_dialog()
     class_invariant()
   end
 

@@ -90,6 +90,22 @@ class MainView
     class_invariant()
   end
 
+  # Shows the message dialog
+  def show_message_dialog(message)
+    class_invariant()
+    @message_dialog_label.text = message
+    @message_dialog.hide_on_delete()
+    @message_dialog.show()
+    class_invariant()
+  end
+
+  # Hides the statistics dialog
+  def hide_message_dialog()
+    class_invariant()
+    @message_dialog.hide()
+    class_invariant()
+  end
+
   # Shows the help dialog
   def show_help()
     class_invariant()
@@ -306,6 +322,8 @@ class MainView
     @board=@builder.get_object("board")
     @win_dialog=@builder.get_object("win_dialog")
     @win_dialog_label=@builder.get_object("winner_label")
+    @message_dialog=@builder.get_object("message_dialog")
+    @message_dialog_label=@builder.get_object("message_dialog_label")
     @eventbox=@builder.get_object("eventbox1")
     @otto_radiobutton=@builder.get_object("radiobutton2")
     @humans=@builder.get_object("spinbutton1")
