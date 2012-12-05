@@ -128,7 +128,7 @@ module ServerManagerContracts
     assert result == true || result == false, "result must be a boolean value"
   end
 
-  def pre_get_open_games(player_name)
+  def pre_get_open_games(player)
     assert player.is_a?(String), "player must be a string"
     assert player.size > 0, "player string must not be empty"
   end
