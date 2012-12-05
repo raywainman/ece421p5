@@ -154,7 +154,6 @@ module ServerManagerContracts
       assert row.respond_to?("keys"), "leaderboard row must be a hash"
       row.each_pair { |key, value|
         assert key.is_a?(String), "key should be a string"
-        assert value.is_a?(Fixnum) || value.is_a?(String), "value should be a string"
       }
     }
   end
