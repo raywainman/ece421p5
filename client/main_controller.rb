@@ -273,7 +273,7 @@ class MainController
   # Win check function, runs in a timer that fires every second and verifies if
   # a win has occured. If so, makes appropriate view calls.
   def start_win_timer
-    @win_thread = Gtk.timeout_add(1000) {
+    @win_thread = Gtk.timeout_add(500) {
       if @winner != -1 && @winner != 0
         @view.show_win(@winner.to_s)
         false
