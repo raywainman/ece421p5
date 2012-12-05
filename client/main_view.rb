@@ -41,6 +41,8 @@ class MainView
   def show
     class_invariant()
     @builder.get_object("mainMenu").show()
+    @humans.text = "1"
+    @computers.text = "1"
     Gtk.main()
   end
 
