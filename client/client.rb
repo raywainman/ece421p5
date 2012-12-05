@@ -47,9 +47,8 @@ class Client
     begin
       @view.initialize_players(players)
     rescue Exception => e
-      puts e
       puts e.backtrace
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
     post_initialize_players()
   end
@@ -64,9 +63,8 @@ class Client
       @view.update(grid, active_player)
       return true
     rescue Exception => e
-      puts e
       puts e.backtrace
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
     post_update()
   end
@@ -79,9 +77,8 @@ class Client
       @controller.set_win(winner)
       return true
     rescue Exception => e
-      puts e
       puts e.backtrace
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
     post_win()
   end
@@ -94,9 +91,8 @@ class Client
       @controller.set_win(0)
       return true
     rescue Exception => e
-      puts e
       puts e.backtrace
-      @view.show_error_dialog
+      @view.show_error_dialog(e)
     end
     post_tie()
   end

@@ -41,5 +41,10 @@ module CommonContracts
     assert ip.is_a?(String), "ip value must be a string"
     assert ip.size > 0, "ip value must not be empty"
   end
-  
+
+  def check_name(name)
+    assert name.is_a?(String), "name must be a string"
+    assert name.size > 0, "name must not be empty"
+  end
+
 end

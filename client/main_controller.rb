@@ -29,19 +29,23 @@ class MainController
   # Notifies the controller that a winner has been determined. Will be shown
   # when the next win check timeout occurs.
   def set_win(win)
+    pre_set_win(win)
     @winner = win
+    post_set_win()
   end
 
   # MAIN MENU SIGNALS
 
   # Application closed
   def gtk_main_quit
+    class_invariant()
     Gtk.main_quit
     exit!
   end
 
   # Number of players changed
   def on_players_changed
+    class_invariant()
     begin
       sum = @view.humans.text.to_i + @view.computers.text.to_i
       if @view.get_mode == "otto"
@@ -64,10 +68,12 @@ class MainController
       puts e.backtrace
       @view.show_error_dialog(e)
     end
+    class_invariant()
   end
 
   # Radio button (for game mode) changed
   def on_mode_changed
+    class_invariant()
     begin
       if @view.get_mode == "otto"
         if @view.humans.text.to_i >= 2
@@ -83,10 +89,12 @@ class MainController
       puts e.backtrace
       @view.show_error_dialog(e)
     end
+    class_invariant()
   end
 
   # Start button clicked
   def on_start_clicked
+    class_invariant()
     begin
       game_type = @view.get_mode
       difficulty = @view.get_difficulty
@@ -107,11 +115,13 @@ class MainController
       puts e.backtrace
       @view.show_error_dialog(e)
     end
+    class_invariant()
     return true
   end
 
   # Join button clicked
   def on_join_clicked
+    class_invariant()
     begin
       @id = @view.get_selected_game
       if @id == nil
@@ -133,22 +143,31 @@ class MainController
       puts e.backtrace
       @view.show_error_dialog(e)
     end
+    class_invariant()
   end
 
   # Refresh button clicked
   def on_refresh_clicked
+    class_invariant()
     begin
       games = Marshal.load(get_rpc.get_open_games(@view.get_player_name))
-      @view.set_game_list(games)
+      @view.games_list.model.clear
+      games.each { |id, name|
+        row = @view.games_list.model.insert(0)
+        row.set_value(0, name)
+        row.set_value(1, id)
+      }
     rescue Exception => e
       puts e.message
       puts e.backtrace
       @view.show_error_dialog(e.message)
     end
+    class_invariant()
   end
 
   # Statistics button clicked
   def on_statistics_clicked
+    class_invariant()
     begin
       @view.statistics_table.model.clear()
       leaderboard = Marshal.load(get_rpc.get_leaderboard())
@@ -167,30 +186,36 @@ class MainController
       puts e.backtrace
       @view.show_error_dialog(e)
     end
+    class_invariant()
   end
 
   # Close button in statistics dialog clicked
   def on_statistics_close
+    class_invariant()
     @view.hide_statistics_dialog
+    class_invariant()
   end
 
   # Help button clicked
   def on_help_clicked
+    class_invariant()
     @view.show_help()
+    class_invariant()
   end
 
   # Close button in help dialog clicked
   def on_help_close
+    class_invariant()
     @view.hide_help()
+    class_invariant()
   end
 
   # BOARD SIGNALS
 
   # Mouse clicked on one of the columns
   def on_column_clicked
+    class_invariant()
     begin
-      
-      
       get_rpc.make_move(@id, @view.get_player_name, @view.col_selected)
       grid, active_player = get_rpc.update(@id)
       @view.update(Marshal.load(grid), active_player)
@@ -199,10 +224,12 @@ class MainController
       puts e.backtrace
       @view.show_error_dialog(e)
     end
+    class_invariant()
   end
 
   # Mouse hovered over one of the columns
   def on_column_hover(widget, event)
+    class_invariant()
     begin
       #get the column
       @view.set_column_selected(event.x)
@@ -213,21 +240,26 @@ class MainController
       puts e.backtrace
       @view.show_error_dialog(e)
     end
+    class_invariant()
   end
 
   # Board closed
   def on_board_close
+    class_invariant()
     @view.hide_board()
+    class_invariant()
   end
-  
+
   # WIN DIALOG SIGNALS
 
   # Return to main menu button clicked within the win dialog
   def on_win_close
+    class_invariant()
     @view.hide_win_dialog()
     @view.hide_board()
     @view.reset_board_images()
     @winner = -1
+    class_invariant()
   end
 
   private
