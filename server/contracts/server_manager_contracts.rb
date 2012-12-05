@@ -124,8 +124,9 @@ module ServerManagerContracts
     assert(id >= 0, "invalid game id provided")
   end
 
-  def post_update(result)
-    assert result == true || result == false, "result must be a boolean value"
+  def post_update(grid, active_player)
+    check_grid_array(grid)
+    check_active_player(active_player)
   end
 
   def pre_get_open_games(player)

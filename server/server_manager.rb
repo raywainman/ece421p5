@@ -185,18 +185,19 @@ class ServerManager
   def update(id)
     pre_update(id)
     class_invariant()
-    result = nil
+    grid = nil
+    active_player = nil
     begin
       @locks[id].synchronize {
         grid, active_player = @games[id].get_state
-        result = Marshal.dump(grid), active_player
       }
     rescue Exception => e
       puts e
       puts e.backtrace
     end
     class_invariant()
-    post_update(result)
+    post_update(grid, active_player)
+    return Marshal.dump(grid), active_player
   end
 
   def get_open_games(player_name)
