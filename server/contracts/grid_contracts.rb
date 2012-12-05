@@ -126,22 +126,25 @@ module GridContracts
   end
 
   def class_invariant()
-    assert @grid.size == 6, "grid incorrect size"
-    assert @grid[0].size == 7, "grid incorrect size"
-    # Ensure number of tokens from each player is consistent
-    count = Hash.new
-    count.default = 0
-    @grid.each{ |row|
-      row.each{ |element|
-        if element != ""
-          count[element] = count[element] + 1
-        end
-      }
-    }
-    max_value = count.values.max
-    count.values.each{ |value|
-      difference = max_value - value
-      assert difference.abs <= 1, "inconsistent number of tokens"
-    }
+# -These contracts are valid, but have been commented out for performance
+#  after code/testing was complete.
+#
+#    assert @grid.size == 6, "grid incorrect size"
+#    assert @grid[0].size == 7, "grid incorrect size"
+#    # Ensure number of tokens from each player is consistent
+#    count = Hash.new
+#    count.default = 0
+#    @grid.each{ |row|
+#      row.each{ |element|
+#        if element != ""
+#          count[element] = count[element] + 1
+#        end
+#      }
+#    }
+#    max_value = count.values.max
+#    count.values.each{ |value|
+#      difference = max_value - value
+#      assert difference.abs <= 1, "inconsistent number of tokens"
+#    }
   end
 end

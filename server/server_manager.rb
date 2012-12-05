@@ -126,6 +126,8 @@ class ServerManager
         if(@games[id].winner != -1)
           return false
         end
+        
+        
 
         result = @games[id].make_move(player, column)
 
