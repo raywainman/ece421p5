@@ -1,6 +1,7 @@
 require "test/unit"
 
 require_relative "../../contracts/common_contracts"
+
 # Contracts for the Player class.
 
 # Author:: Dustin Durand (dddurand@ualberta.ca)

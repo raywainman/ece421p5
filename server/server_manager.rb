@@ -134,7 +134,6 @@ class ServerManager
         db.close_connection()
         grid, active_player = @games[id].get_state()
         @players[id].each { |player_rpc|
-
           get_rpc(player_rpc).update(Marshal.dump(grid), active_player)
         }
         if @games[id].winner != -1
@@ -149,7 +148,10 @@ class ServerManager
           end
           db = ServerDatabase.getInstance()
           db.set_game_complete(id)
+          
           # TODO: Only collect statistics for multiplayer games
+          puts @players
+          
           stats = @games[id].collect_statistics
           stats["GAME_ID"] = id
           puts stats.inspect
