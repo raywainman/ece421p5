@@ -127,7 +127,9 @@ class ServerManager
           return false
         end
         
-        
+        if(@games[id].is_column_full?(column))
+          return false
+        end
 
         result = @games[id].make_move(player, column)
 

@@ -46,6 +46,14 @@ class Game
     reset_postconditions()
   end
 
+  def is_column_full?(column)
+    is_column_full_preconditions(column)
+    result = @grid.is_column_full?(column)
+    is_column_full_postconditions
+    
+    result
+  end
+  
   # Constructs a State object from the current game state
   def get_state()
     get_state_preconditions()

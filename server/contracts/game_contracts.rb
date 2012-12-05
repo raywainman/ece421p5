@@ -98,6 +98,15 @@ module GameContracts
     assert stats.has_key?("PLAYERS"), "stats should at least contain PLAYERS"
   end
   
+  def is_column_full_preconditions(column)
+    assert column >= 0, "column must be within range"
+    assert column < 7, "column must be within range"
+  end
+
+  def is_column_full_postconditions()
+    # No postconditions
+  end
+  
   def class_invariant()
     assert @grid.is_a?(Grid), "grid must be a Grid object"
     @grid.class_invariant()
